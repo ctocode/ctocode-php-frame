@@ -1,0 +1,10 @@
+{
+	"name" : "ctocode/ctocode-php-frame",
+	"description" : "php frame",
+	"authors": [
+        {
+            "name": "ctocode"
+        }
+    ],
+	"license" : "MIT"
+}
