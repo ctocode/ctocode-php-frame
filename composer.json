@@ -1,10 +1,20 @@
 {
-	"name" : "ctocode/ctocode-php-frame",
-	"description" : "php frame",
+	"name": "ctocode/ctocode-php-frame",
+	"description": "php frame",
+	"version": "1.0",
 	"authors": [
-        {
-            "name": "ctocode"
-        }
-    ],
-	"license" : "MIT"
+		{
+			"name": "ctocode",
+			"email": "343196936@qq.com"
+		}
+	],
+	"license": "MIT",
+	"require": {
+		"php": ">=5.4"
+	},
+	"autoload": {
+		"psr-4": {
+			"ctocode\\phpframe\\": "src/"
+		}
+	}
 }
