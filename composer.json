@@ -20,5 +20,5 @@
 			"src/ctocode.php"
 		]
 	},
-	"minimum-stability" : "dev"
+	"minimum-stability" : "stable"
 }
