@@ -1,5 +1,8 @@
 <?php
-class CTOCODE_Cache
+
+namespace ctocode\phpframe\library;
+
+class CtoCache
 {
 	private static $_instance = null;
 	protected $_options = array(
@@ -333,7 +336,7 @@ function ctoFileCacheDel($param = array(), $slize = FALSE)
 	try{
 		unlink ( $file_path );
 	}
-	catch ( Exception $e ){
+	catch ( \Exception $e ){
 		echo '<div style="color:red;">' . '清除缓存文件失败!请检查目录权限!' . '</div>';
 	}
 	// 存放缓存文件的默认目录

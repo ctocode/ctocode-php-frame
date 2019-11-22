@@ -1,4 +1,7 @@
 <?php
+
+namespace ctocode\phpframe\library;
+
 /**
  * 生成验证码类 
  * 单例模式 

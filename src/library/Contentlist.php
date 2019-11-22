@@ -1,4 +1,7 @@
 <?php
+
+namespace ctocode\phpframe\library;
+
 /**
  * @class  表单，字段限定查询语句拼接
  * @author ctocode-zhw
@@ -187,7 +190,7 @@ class CTOCODE_Contentlist
 	/*
 	 * 为了得到 缓存文件上次更新时间 从common.func.php拷贝了此函数 稍做了修改 *************************************************************
 	 */
-	function getCache($key = '', $dir = 'com', $time = -1, $slize = true)
+	function getCache($key = '', $dir = 'com', $time = - 1, $slize = true)
 	{
 		global $_glb;
 		if(trim ( $key ) == '')

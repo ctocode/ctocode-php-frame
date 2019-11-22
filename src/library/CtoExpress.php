@@ -1,4 +1,7 @@
 <?php
+
+namespace ctocode\phpframe\library;
+
 /**
  * 物流配送相关类
  * 
@@ -6,7 +9,7 @@
  * @version: 1.0.0
  * @date: 2018/12/01
  */
-class CTOCODE_Express
+class CtoExpress
 {
 	public function getCompanysData()
 	{

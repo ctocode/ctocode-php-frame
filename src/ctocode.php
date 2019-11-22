@@ -55,7 +55,7 @@ define ( '_CTOCODE_CORE_', _CTOCODE_PHPFRAME_ . 'core/' );
 // ctocode 字体
 define ( '_CTOCODE_FONTS_', dirname ( _CTOCODE_PHPFRAME_ ) . '/assets/fonts/' );
 // 项目路径
-define ( '_CTOCODE_PROJECT_', dirname ( _CTOCODE_PHPFRAME_ ) . '/' );
+define ( '_CTOCODE_PROJECT_', dirname ( _CTOCODE_PHPFRAME_ ,4) . '/' );
 // 配置文件路径
 is_dir ( _CTOCODE_PROJECT_ . 'config/' ) ? define ( '_CTOCODE_CONFIG_', _CTOCODE_PROJECT_ . 'config/' ) : exit ( '【ctocode - error】配置文件路径不存在～' );
 // ctocode 组件开发

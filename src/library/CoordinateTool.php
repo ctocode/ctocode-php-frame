@@ -1,4 +1,7 @@
 <?php
+
+namespace ctocode\phpframe\library;
+
 class Coordinate
 {
 	public $x = 0;
