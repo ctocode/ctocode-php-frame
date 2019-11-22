@@ -1,0 +1,19 @@
+language: php
+
+php:
+  - 7.0
+  - hhvm
+
+matrix:
+    allow_failures:
+        - php: 7.0
+        - php: hhvm
+
+before_script:
+  - composer self-update
+  - composer install --prefer-source --no-interaction --dev
+
+script: phpunit --coverage-clover=coverage.xml --configuration=phpunit.xml
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
