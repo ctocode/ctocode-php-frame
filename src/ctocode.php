@@ -15,7 +15,7 @@
  * ============================================================================
  */
 // 1. 加载基础常量配置文件件
-define ( '_CTOCODE_ROOT_', '20170526' );
+define ( '_CTOCODE_ROOT_', '20191123' );
 /*
  * ============================================================================
  * 授权处理
@@ -48,10 +48,6 @@ if(empty ( $ctocode_frame['_CTOCODE_LICENSE_'] ) || empty ( $ctocode_frame['_CTO
  */
 // ctocode 框架路径,定义一个常量,正则替换-获取当前文件的绝对目录,当前文件所在路径
 define ( '_CTOCODE_PHPFRAME_', preg_replace ( '/(\/|\\\\){1,}/', '/', __DIR__ ) . '/' );
-// ctocode 类库
-define ( '_CTOCODE_LIB_', _CTOCODE_PHPFRAME_ . 'library/' );
-// ctocode 核心
-define ( '_CTOCODE_CORE_', _CTOCODE_PHPFRAME_ . 'core/' );
 // ctocode 字体
 define ( '_CTOCODE_FONTS_', dirname ( _CTOCODE_PHPFRAME_ ) . '/assets/fonts/' );
 // 项目路径
