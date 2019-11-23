@@ -1,10 +1,12 @@
 <?php
+
+namespace ctocode\phpframe\library;
+
 /**
  * 地图操作类
  * @author ctocode-zhw
  * @version 2018-0619 22:07
  */
-include_once __DIR__ . '/CoordinateTool.php';
 class CTOCODE_Maps
 {
 	public function huoxingToBaidu()
