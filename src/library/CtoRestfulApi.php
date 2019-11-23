@@ -1,5 +1,7 @@
 <?php
 
+namespace ctocode\phpframe\library;
+
 /**
  * restful - api 接口风格基类
  * @author ctocode-zhw
@@ -28,7 +30,7 @@
 // API的身份认证应该使用OAuth 2.0框架
 // 服务器返回的数据格式，应该尽量使用JSON，避免使用XML
 // 对于请求的数据一般用json或者xml形式来表示，推荐使用json。
-class CTOCODE_RestfulApi extends \CTOCODE_RestfulApiResponse
+class CtoRestfulApi extends CtoRestfulApiResponse
 {
 	// 返回结果
 	public function sendResponse($result_data = null, $send_type = 'json')

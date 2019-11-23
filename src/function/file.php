@@ -101,10 +101,10 @@ function ctoFilePutPhp($file_path = '', $content = '', $is_root = TRUE, $min = F
 	// direct script access allowed');\n}\nreturn ";
 	$cata = "<?php \r\n";
 	if($is_root == TRUE){
-		$cata .= "if(!defined('_CTOCODE_ROOT_')){\r\n";
-		$cata .= "\t" . "header('HTTP/1.1 404 Not Found');\r\n";
-		$cata .= "\t" . "exit('权限路径.No direct script access allowed');\r\n";
-		$cata .= "}\r\n";
+		// $cata .= "if(!defined('_CTOCODE_ROOT_')){\r\n";
+		// $cata .= "\t" . "header('HTTP/1.1 404 Not Found');\r\n";
+		// $cata .= "\t" . "exit('权限路径.No direct script access allowed');\r\n";
+		// $cata .= "}\r\n";
 		$cata .= "\r\n";
 	}
 	$cata .= 'return ';
