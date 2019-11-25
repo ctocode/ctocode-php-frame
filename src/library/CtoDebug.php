@@ -16,7 +16,7 @@ namespace ctocode\phpframe\library;
  * 如果商业用途务必到官方购买正版授权, 以免引起不必要的法律纠纷.
  * ============================================================================
  */
-class CTOCODE_Debug extends \CTOCODE_Errcode
+class CtoDebug extends CtoErrorcode
 {
 	/**
 	 * 调试
