@@ -1,6 +1,9 @@
 <?php
+
+namespace ctocode\phpframe\library;
+
 // 数据采集，doGET,doPOST,文件下载，
-class CTOCODE_Http
+class CtoHttp
 {
 	public static $way = 0;
 	// 手动设置访问方式

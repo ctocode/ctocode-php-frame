@@ -21,7 +21,7 @@ class CtoRestfulApiResponse extends CtoRestfulApiBase
 	protected function encodeXml($responseData = array())
 	{ // 创建 SimpleXMLElement 对象
 		/* '<?xml version="1.0"?><site></site>' */
-		$xml = new SimpleXMLElement ( '<?xml version="1.0"?><rest></rest>' );
+		$xml = new \SimpleXMLElement ( '<?xml version="1.0"?><rest></rest>' );
 		foreach($responseData as $key=>$value){
 			if(is_array ( $value )){
 				foreach($value as $k=>$v){

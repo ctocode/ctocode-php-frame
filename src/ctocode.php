@@ -84,7 +84,6 @@ require _CTOCODE_PHPFRAME_ . 'function/session.php'; // session处理
 require _CTOCODE_PHPFRAME_ . 'function/sql.php'; // sql语句,数据库
 require _CTOCODE_PHPFRAME_ . 'function/str.php'; // 字符串
 require _CTOCODE_PHPFRAME_ . 'function/time.php'; // 时间
-
 // -重要
 require _CTOCODE_PHPFRAME_ . 'function/common.php'; // 常用函数
 

@@ -1,5 +1,7 @@
 <?php
 
+namespace ctocode\phpframe\library;
+
 /**
  * 【ctocode】      常用函数 - debug 调试 相关处理
  * ============================================================================
@@ -30,29 +32,29 @@ class CTOCODE_Debug extends \CTOCODE_Errcode
 		if(! is_dir ( $debug_log_dir )){
 			mkdir ( $debug_log_dir, 0777, true );
 		}
-		
+
 		$file_name = $debug_log_dir . '/' . $file_name;
-		
+
 		$time = date ( 'Y-m-d H:i:s', time () );
 		$myfile = fopen ( $file_name, "a" );
 		if(! $myfile){
 			return FALSE;
 		}
-		
+
 		fwrite ( $myfile, $tag . '==>' . $time . "\r\n" );
-		
+
 		if($type == 1){
 			fwrite ( $myfile, $data );
 		}else{
 			fwrite ( $myfile, var_export ( $data, TRUE ) );
 		}
 		fwrite ( $myfile, "\r\n\r\n" );
-		
+
 		fclose ( $myfile );
-		
+
 		return TRUE;
 	}
-	
+
 	/**
 	 * @function 获取执行路径
 	 * @version 2017-03-20
@@ -61,7 +63,7 @@ class CTOCODE_Debug extends \CTOCODE_Errcode
 	function ctoDebugGetBackTrace()
 	{
 		$backtrace = debug_backtrace ( NULL, 6 );
-		
+
 		foreach($backtrace as $key=>$val){
 			$rtn = preg_match ( '/.*App.class.php$/', $val['file'] );
 			$rtn1 = preg_match ( '/.*dbrw.tp.php$/', $val['file'] );
@@ -82,10 +84,10 @@ class CTOCODE_Debug extends \CTOCODE_Errcode
 				$trace .= "\r\n";
 			}
 		}
-		
+
 		return $trace;
 	}
-	
+
 	/**
 	 * @function 日志记录
 	 * @version 2017-03-20
@@ -97,7 +99,7 @@ class CTOCODE_Debug extends \CTOCODE_Errcode
 	 */
 	function ctoDebugLog($string = "", $flags = "", $dirName = "", $fileName = "")
 	{
-		
+
 		// bs_staff_message AS umsg
 		if($rtn = preg_match ( '/.*bs_staff_message\s*AS\s*umsg.*/', $string )){
 			return;
@@ -110,23 +112,23 @@ class CTOCODE_Debug extends \CTOCODE_Errcode
 			$trace .= "【FLAG】: " . $flags . "\r\n";
 		}
 		$trace .= $string;
-		
+
 		// 判断路径是否存在
 		$debug_log_dir = 'data/mysql_log/' . date ( 'Y-m-d', time () ) . "/" . $dirName;
 		if(! is_dir ( $debug_log_dir )){
 			mkdir ( $debug_log_dir, 0777, true );
 		}
-		
+
 		$file_name = $debug_log_dir . '/' . $fileName;
 		$fp = fopen ( $file_name, "a" );
 		if(! $fp){
 			return FALSE;
 		}
-		
+
 		$content = $trace . "\r\n客户端ip地址：" . ctoIpGet () . "\r\n" . date ( "Y-m-d H:i:s" ) . "==================THE END==================\r\n";
 		fwrite ( $fp, $content );
 		fclose ( $fp );
-		
+
 		return TRUE;
 	}
 	/**

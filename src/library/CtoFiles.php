@@ -1,10 +1,13 @@
 <?php
+
+namespace ctocode\phpframe\library;
+
 /**
  * 文件处理
  * @author ctocode-zhw
  *
  */
-class CTOCODE_Files
+class CtoFiles
 {
 	public $orderby;
 	public function __construct()
