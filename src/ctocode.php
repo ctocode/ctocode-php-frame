@@ -71,22 +71,22 @@ define ( '_CTOCODE_VENDOR_', _CTOCODE_PROJECT_ . 'vendor/' );
 /*
  * 加载 通用函数
  */
-include_once _CTOCODE_PHPFRAME_ . 'helper/check.php';
-include_once _CTOCODE_PHPFRAME_ . 'helper/common.php'; // 常用函数
-include_once _CTOCODE_PHPFRAME_ . 'helper/file_do.php'; // 文件其他
-include_once _CTOCODE_PHPFRAME_ . 'helper/file.php'; // 文件操作
-include_once _CTOCODE_PHPFRAME_ . 'helper/html.php'; // html
-include_once _CTOCODE_PHPFRAME_ . 'helper/http.php'; // http
-include_once _CTOCODE_PHPFRAME_ . 'helper/img.php'; //
-include_once _CTOCODE_PHPFRAME_ . 'helper/input.php';
-include_once _CTOCODE_PHPFRAME_ . 'helper/ip.php'; // ip
-include_once _CTOCODE_PHPFRAME_ . 'helper/language.php'; // 语言
-include_once _CTOCODE_PHPFRAME_ . 'helper/load.php'; // load
-include_once _CTOCODE_PHPFRAME_ . 'helper/security.php'; // 安全处理
-include_once _CTOCODE_PHPFRAME_ . 'helper/session.php'; // session处理
-include_once _CTOCODE_PHPFRAME_ . 'helper/sql.php'; // sql语句,数据库
-include_once _CTOCODE_PHPFRAME_ . 'helper/str.php'; // 字符串
-include_once _CTOCODE_PHPFRAME_ . 'helper/time.php'; // 时间
+include_once __DIR__ . '/helper/check.php';
+include_once __DIR__ . '/helper/common.php'; // 常用函数
+include_once __DIR__ . '/helper/file_do.php'; // 文件其他
+include_once __DIR__ . '/helper/file.php'; // 文件操作
+include_once __DIR__ . '/helper/html.php'; // html
+include_once __DIR__ . '/helper/http.php'; // http
+include_once __DIR__ . '/helper/img.php'; //
+include_once __DIR__ . '/helper/input.php';
+include_once __DIR__ . '/helper/ip.php'; // ip
+include_once __DIR__ . '/helper/language.php'; // 语言
+include_once __DIR__ . '/helper/load.php'; // load
+include_once __DIR__ . '/helper/security.php'; // 安全处理
+include_once __DIR__ . '/helper/session.php'; // session处理
+include_once __DIR__ . '/helper/sql.php'; // sql语句,数据库
+include_once __DIR__ . '/helper/str.php'; // 字符串
+include_once __DIR__ . '/helper/time.php'; // 时间
 
 
 /* ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: */
