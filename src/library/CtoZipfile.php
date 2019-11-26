@@ -1,5 +1,8 @@
 <?php
-class CTOCODE_Zipfile
+
+namespace ctocode\phpframe\library;
+
+class CtoZipfile
 {
 	protected $datasec = array();
 	protected $ctrl_dir = array();

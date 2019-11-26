@@ -1,10 +1,13 @@
 <?php
+
+namespace ctocode\phpframe\library;
+
 /**
  * 上传类
  * @author ctocode-zhw
  * @version 2015-03-18
  */
-class CTOCODE_Upload
+class CtoUpload
 {
 	private $error_code = array(
 		1 => '其值为1,传的文件超过了 php.ini 中 upload_max_filesize 选项限制的值',
@@ -173,7 +176,7 @@ class CTOCODE_Upload
 			'doc',
 			'mp3'
 		);
-		$exttrue = \CTOCODE_Files::getFileExt ( $upfile['name'] );
+		$exttrue = CtoFiles::getFileExt ( $upfile['name'] );
 		$upary = empty ( $upary ) ? join ( ',', $safeext ) : $upary;
 		// 格式不允许
 		if(! in_array ( $exttrue, explode ( ',', $upary ) )){

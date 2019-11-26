@@ -1,10 +1,13 @@
 <?php
+
+namespace ctocode\phpframe\library;
+
 /**
  * 上传图片类
  * @author ctocode-zhw
  * @version 2018-1219 21:07
  */
-class CTOCODE_UploadImages
+class CtoUploadImages
 {
 	public function uploadImage($options = array())
 	{
