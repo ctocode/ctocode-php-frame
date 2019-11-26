@@ -1,5 +1,8 @@
 <?php
-class CTOCODE_Excel
+
+namespace ctocode\phpframe\library;
+
+class CtoExcel
 {
 	public $filename = 'excel-doc';
 	public $custom_titles;

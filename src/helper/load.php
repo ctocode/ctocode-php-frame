@@ -1,4 +1,7 @@
 <?php
+
+namespace ctocode\phpframe\helper;
+
 /**
  * 【ctocode】      常用函数 - load相关处理
  * ============================================================================
@@ -16,6 +19,7 @@
 
 // 加载 状态 201603300
 use ctocode\phpframe\library\CtoArray;
+
 function ctoLoadState($onlytime = 0, $more = 0, $msql_quetynum = 0)
 {
 	define ( 'MICROTIME_START', microtime () );

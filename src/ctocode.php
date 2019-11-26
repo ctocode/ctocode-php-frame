@@ -14,6 +14,8 @@
  * 如果商业用途务必到官方购买正版授权, 以免引起不必要的法律纠纷.
  * ============================================================================
  */
+namespace ctocode\phpframe;
+
 // 1. 加载基础常量配置文件件
 define ( '_CTOCODE_ROOT_', '20191123' );
 /*
@@ -51,7 +53,7 @@ define ( '_CTOCODE_PHPFRAME_', preg_replace ( '/(\/|\\\\){1,}/', '/', __DIR__ ) 
 // ctocode 字体
 define ( '_CTOCODE_FONTS_', dirname ( _CTOCODE_PHPFRAME_ ) . '/assets/fonts/' );
 // 项目路径
-define ( '_CTOCODE_PROJECT_', dirname ( _CTOCODE_PHPFRAME_ ,4) . '/' );
+define ( '_CTOCODE_PROJECT_', dirname ( _CTOCODE_PHPFRAME_, 4 ) . '/' );
 // 配置文件路径
 is_dir ( _CTOCODE_PROJECT_ . 'config/' ) ? define ( '_CTOCODE_CONFIG_', _CTOCODE_PROJECT_ . 'config/' ) : exit ( '【ctocode - error】配置文件路径不存在～' );
 // ctocode 组件开发
@@ -69,23 +71,22 @@ define ( '_CTOCODE_VENDOR_', _CTOCODE_PROJECT_ . 'vendor/' );
 /*
  * 加载 通用函数
  */
-require _CTOCODE_PHPFRAME_ . 'function/check.php';
-require _CTOCODE_PHPFRAME_ . 'function/file_do.php'; // 文件其他
-require _CTOCODE_PHPFRAME_ . 'function/file.php'; // 文件操作
-require _CTOCODE_PHPFRAME_ . 'function/html.php'; // html
-require _CTOCODE_PHPFRAME_ . 'function/http.php'; // http
-require _CTOCODE_PHPFRAME_ . 'function/img.php'; //
-require _CTOCODE_PHPFRAME_ . 'function/input.php';
-require _CTOCODE_PHPFRAME_ . 'function/ip.php'; // ip
-require _CTOCODE_PHPFRAME_ . 'function/language.php'; // 语言
-require _CTOCODE_PHPFRAME_ . 'function/load.php'; // load
-require _CTOCODE_PHPFRAME_ . 'function/security.php'; // 安全处理
-require _CTOCODE_PHPFRAME_ . 'function/session.php'; // session处理
-require _CTOCODE_PHPFRAME_ . 'function/sql.php'; // sql语句,数据库
-require _CTOCODE_PHPFRAME_ . 'function/str.php'; // 字符串
-require _CTOCODE_PHPFRAME_ . 'function/time.php'; // 时间
-// -重要
-require _CTOCODE_PHPFRAME_ . 'function/common.php'; // 常用函数
+include_once _CTOCODE_PHPFRAME_ . 'helper/check.php';
+include_once _CTOCODE_PHPFRAME_ . 'helper/common.php'; // 常用函数
+include_once _CTOCODE_PHPFRAME_ . 'helper/file_do.php'; // 文件其他
+include_once _CTOCODE_PHPFRAME_ . 'helper/file.php'; // 文件操作
+include_once _CTOCODE_PHPFRAME_ . 'helper/html.php'; // html
+include_once _CTOCODE_PHPFRAME_ . 'helper/http.php'; // http
+include_once _CTOCODE_PHPFRAME_ . 'helper/img.php'; //
+include_once _CTOCODE_PHPFRAME_ . 'helper/input.php';
+include_once _CTOCODE_PHPFRAME_ . 'helper/ip.php'; // ip
+include_once _CTOCODE_PHPFRAME_ . 'helper/language.php'; // 语言
+include_once _CTOCODE_PHPFRAME_ . 'helper/load.php'; // load
+include_once _CTOCODE_PHPFRAME_ . 'helper/security.php'; // 安全处理
+include_once _CTOCODE_PHPFRAME_ . 'helper/session.php'; // session处理
+include_once _CTOCODE_PHPFRAME_ . 'helper/sql.php'; // sql语句,数据库
+include_once _CTOCODE_PHPFRAME_ . 'helper/str.php'; // 字符串
+include_once _CTOCODE_PHPFRAME_ . 'helper/time.php'; // 时间
 
 
 /* ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: */

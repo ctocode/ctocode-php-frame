@@ -1,4 +1,7 @@
 <?php
+
+namespace ctocode\phpframe\helper;
+
 /**
  * 【ctocode】      常用函数 - file相关处理
  * ============================================================================
@@ -53,7 +56,7 @@ function ctoFilePutContents($file_path, $content)
 	try{
 		file_put_contents ( $file_path, $content );
 	}
-	catch ( Exception $e ){
+	catch ( \Exception $e ){
 		echo '<div style="color:red;">' . '写入缓存失败!请检查目录权限!' . '</div>';
 	}
 }
@@ -251,7 +254,7 @@ function ctoFileDirCreate($dir_all, $mode = 0777, $dir_base = '')
 	try{
 		mkdir ( $val, 0777 );
 	}
-	catch ( Exception $e ){
+	catch ( \Exception $e ){
 		$msg = '目录不存在并且创建失败!请检查目录权限!';
 		return FALSE;
 	}

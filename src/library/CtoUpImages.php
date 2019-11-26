@@ -3,7 +3,7 @@
 /*
  * PHP上传图片，生成略缩图，加水印工具类
  */
-class CTOCODE_UpImages
+class CtoUpImages
 {
 	var $annexFolder = "upload"; // 附件存放点，默认为：annex
 	var $smallFolder = "small"; // 缩略图存放路径，注：必须是放在 $annexFolder下的子目录，默认为：smallimg

@@ -1,4 +1,7 @@
 <?php
+
+namespace ctocode\phpframe\helper;
+
 /**
  * 【ctocode】      常用函数 - check相关处理
  * ============================================================================
@@ -85,11 +88,11 @@ function ctoCheck($type = NULL, $str = NULL)
 			$regex = '/^[a-z0-9!#$%&\'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+\/=?^_`{|}~-]+)*@(?:[-_a-z0-9][-_a-z0-9]*\.)*(?:[a-z0-9][-a-z0-9]{0,62})\.(?:(?:[a-z]{2}\.)?[a-z]{2,})$/i';
 			break;
 
-		//身份证验证
-        case 'idcard':
+		// 身份证验证
+		case 'idcard':
 
-            $regex = '/^(\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$/';
-            break;
+			$regex = '/^(\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$/';
+			break;
 	}
 	return preg_match ( $regex, $str ) ? true : false;
 }

@@ -1,4 +1,7 @@
 <?php
+
+namespace ctocode\phpframe\helper;
+
 /**
  * 【ctocode】      常用函数 - time相关处理
  * ============================================================================
@@ -18,8 +21,8 @@
 function ctoDate($format = "Y-m-d H:i:s", $unixtime = 0, $timezone = 'PRC')
 {
 	// DateTime类的bug，加入@可以将Unix时间戳作为参数传入
-	$datetime = new DateTime ( "@$unixtime" );
-	$datetime->setTimezone ( new DateTimeZone ( $timezone ) );
+	$datetime = new \DateTime ( "@$unixtime" );
+	$datetime->setTimezone ( new \DateTimeZone ( $timezone ) );
 	return $datetime->format ( $format );
 
 	// global $_glb;
@@ -32,7 +35,7 @@ function ctoDate($format = "Y-m-d H:i:s", $unixtime = 0, $timezone = 'PRC')
 // ctoStrToTime 替代 strtotime
 function ctoStrToTime($date, $timezone = 'PRC')
 {
-	$datetime = new DateTime ( $date, new DateTimeZone ( $timezone ) );
+	$datetime = new \DateTime ( $date, new \DateTimeZone ( $timezone ) );
 	return $datetime->format ( 'U' );
 }
 /**

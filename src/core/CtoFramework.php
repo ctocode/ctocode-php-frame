@@ -1,6 +1,6 @@
 <?php
 // 核心启动类
-class CTOCODE_Framework
+class CtoFramework
 {
 	// 让项目启动 static静态方法 配合Framework::run();
 	public static function run()

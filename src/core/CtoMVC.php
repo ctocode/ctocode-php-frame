@@ -14,7 +14,7 @@
  * ============================================================================
  */
 // set_exception_handler(array("Factory","last_fun")); 设置一个用户定义的异常处理函数
-CTOCODE_MVC::getIns ( $_SERVER['REQUEST_URI'] );
+CtoMVC::getIns ( $_SERVER['REQUEST_URI'] );
 abstract class ProductInterface
 {
 	public $data = array(); // 用于接收传过来的内容
@@ -76,7 +76,7 @@ abstract class ProductInterface
 		}
 	}
 }
-class CTOCODE_MVC
+class CtoMVC
 {
 	protected static $ins = null;
 	protected function __construct()

@@ -1,6 +1,10 @@
 <?php
+
+namespace ctocode\phpframe\core\database;
+
 use ctocode\phpframe\library\CtoLogger;
-class mySqlDb
+
+class CtoDbMysql
 {
 	public static $pdo_r = null;
 	public static $pdo_w = null;
@@ -16,13 +20,13 @@ class mySqlDb
 			$dbUser = $dbActR['user'];
 			$dbPass = $dbActR['pass'];
 			$dbName = $dbActR['dbname'];
-			self::$pdo_r = new PDO ( 'mysql:dbname=' . $dbName . ';host=' . $dbHost, $dbUser, $dbPass );
+			self::$pdo_r = new \PDO ( 'mysql:dbname=' . $dbName . ';host=' . $dbHost, $dbUser, $dbPass );
 			if(self::$pdo_r){
 				self::$pdo_r->query ( 'set names utf8;' );
 				self::$connected = true;
 			}
 		}
-		catch ( PDOException $e ){
+		catch ( \PDOException $e ){
 			// echo $e->getMessage();
 			self::$connected = false;
 			self::$err = "db connect error ...";
@@ -34,13 +38,13 @@ class mySqlDb
 			$dbUser = $dbActW['user'];
 			$dbPass = $dbActW['pass'];
 			$dbName = $dbActW['dbname'];
-			self::$pdo_w = new PDO ( 'mysql:dbname=' . $dbName . ';host=' . $dbHost, $dbUser, $dbPass );
+			self::$pdo_w = new \PDO ( 'mysql:dbname=' . $dbName . ';host=' . $dbHost, $dbUser, $dbPass );
 			if(self::$pdo_w){
 				self::$pdo_w->query ( 'set names utf8;' );
 				self::$connected = true;
 			}
 		}
-		catch ( PDOException $e ){
+		catch ( \PDOException $e ){
 			// echo $e->getMessage();
 			self::$connected = false;
 			self::$err = "db connect error ...";
@@ -89,7 +93,7 @@ class mySqlDb
 			$result = self::$pdo_r->query ( $sql );
 			return $result;
 		}
-		catch ( PDOException $e ){
+		catch ( \PDOException $e ){
 			self::$err = "sql error :::$sql";
 		}
 	}
@@ -105,7 +109,7 @@ class mySqlDb
 				return "0";
 			}
 		}
-		catch ( PDOException $e ){
+		catch ( \PDOException $e ){
 			self::$err = "sql error :::$sql";
 		}
 	}
@@ -119,7 +123,7 @@ class mySqlDb
 			self::$cLogs->writeLog ( $logTime . "=>结果：" . self::$count ); // 写日志
 			return self::$count;
 		}
-		catch ( PDOException $e ){
+		catch ( \PDOException $e ){
 			self::$count = 0;
 			self::$err = "sql error :::$sql";
 		}
