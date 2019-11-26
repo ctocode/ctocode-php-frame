@@ -15,10 +15,7 @@
 		"psr-4" : {
 			"ctocode\\phpframe\\" : "src/",
 			"ctocode\\phpframe\\library\\" : "src/library/"
-		},
-		"files" : [
-			"src/ctocode.php"
-		]
+		}
 	},
-	"minimum-stability" : "stable"
+	"minimum-stability" : "dev"
 }
