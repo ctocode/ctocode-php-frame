@@ -1,6 +1,5 @@
 <?php
 
-namespace ctocode\phpframe\helper;
 /**
  * 【ctocode】      常用函数 - input相关处理 , value相关处理
  * ============================================================================

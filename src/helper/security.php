@@ -1,6 +1,5 @@
 <?php
 
-namespace ctocode\phpframe\helper;
 /**
  * 【ctocode】      常用函数 - security 相关处理
  * ============================================================================
