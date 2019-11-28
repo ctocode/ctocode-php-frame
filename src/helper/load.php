@@ -48,10 +48,10 @@ function ctoLoadConsoleMenuGetMod($dir_path = '', $modules = '*', $param = '')
 	if(is_array ( $modules )){
 		$modules = array_unique ( $modules );
 		foreach($modules as $path){
-			$menu_file_arr[] = $dir_path . "{$path}/menu.php";
+			$menu_file_arr[] = $dir_path . "{$path}/menu/menu.php";
 		}
 	}else{
-		$menu_file_arr = glob ( $dir_path . "{$modules}/menu.php" );
+		$menu_file_arr = glob ( $dir_path . "{$modules}/menu/menu.php" );
 	}
 	$menu_arr = array();
 	foreach($menu_file_arr as $path){

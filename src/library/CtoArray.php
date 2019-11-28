@@ -82,6 +82,7 @@ class CtoArray
 	public static function multiArrSort(&$multi_array = array(), $sort_key = '', $sort_order = SORT_DESC, $sort_type = SORT_NUMERIC)
 	{
 		if(is_array ( $multi_array )){
+			$key_array = [];
 			// $key_array = array_column($multi_array,$sort_key);
 			foreach($multi_array as $row_array){
 				if(is_array ( $row_array )){

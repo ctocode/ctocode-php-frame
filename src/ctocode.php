@@ -83,7 +83,6 @@ include_once __DIR__ . '/helper/language.php'; // 语言
 include_once __DIR__ . '/helper/load.php'; // load
 include_once __DIR__ . '/helper/security.php'; // 安全处理
 include_once __DIR__ . '/helper/session.php'; // session处理
-include_once __DIR__ . '/helper/sql.php'; // sql语句,数据库
 include_once __DIR__ . '/helper/str.php'; // 字符串
 include_once __DIR__ . '/helper/time.php'; // 时间
 

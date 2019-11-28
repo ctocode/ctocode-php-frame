@@ -154,8 +154,7 @@ function ctoSqlZhuanyi()
 		// $field['content'] = stripcslashes ( $val['content'] );
 		$field['description'] = trim ( $val['description'] ); // 描述
 		$field['thumb'] = $val['thumb'];
-		$sql = ctoSqlParse ( '', $field, '' );
-		$sql_result = ctoDbWrite ( $sql ); /* CI 自带的执行SQL */
+		$sql_result = ctoDbWrite ( '', $field, '' ); /* CI 自带的执行SQL */
 		if($sql_result == true){
 			$tool = ($tool + 1);
 			echo $tool . '<br>';

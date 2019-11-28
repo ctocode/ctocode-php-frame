@@ -58,28 +58,28 @@ function ctoSessionDel($timeLong = 86400)
 		}
 	}
 }
-function xxx()
+function xxxxxxxxxxxxx()
 {
-	// =================================设置====================
-	ini_set ( 'session.cookie_domain', '.bo.com' );
-	session_start ();
-	// $session_id = session_id ();
-	// setcookie ( "cookie_sn", $session_id, 100, "/", ".bo.com", 1 );
-	// echo $session_id;
-	$_SESSION['xxxxxx'] = array(
-		0 => 'asdad',
-		1 => '123123'
-	);
-	$_SESSION['xxx3'] = 'ctocode-解决php跨域session----11111111111111111111111';
-	echo '赋予的session:【 ' . $_SESSION['xxx3'] . ' 】<br>';
-	exit ();
-	// =================================获取====================
-	ini_set ( 'session.cookie_domain', '.bo.com' );
-	session_start ();
-	// $cookie = empty ( $_COOKIE['cookie_sn'] ) ? '' : $_COOKIE['cookie_sn'];
-	// session_id ( $_COOKIE['cookie_sn'] );
-	echo '获取的session:【 ' . $_SESSION['xxxxx'] . ' 】<br>';
-	exit ();
+	// // =================================设置====================
+	// ini_set ( 'session.cookie_domain', '.bo.com' );
+	// session_start ();
+	// // $session_id = session_id ();
+	// // setcookie ( "cookie_sn", $session_id, 100, "/", ".bo.com", 1 );
+	// // echo $session_id;
+	// $_SESSION['xxxxxx'] = array(
+	// 0 => 'asdad',
+	// 1 => '123123'
+	// );
+	// $_SESSION['xxx3'] = 'ctocode-解决php跨域session----11111111111111111111111';
+	// echo '赋予的session:【 ' . $_SESSION['xxx3'] . ' 】<br>';
+	// exit ();
+	// // =================================获取====================
+	// ini_set ( 'session.cookie_domain', '.bo.com' );
+	// session_start ();
+	// // $cookie = empty ( $_COOKIE['cookie_sn'] ) ? '' : $_COOKIE['cookie_sn'];
+	// // session_id ( $_COOKIE['cookie_sn'] );
+	// echo '获取的session:【 ' . $_SESSION['xxxxx'] . ' 】<br>';
+	// exit ();
 }
 
 /**

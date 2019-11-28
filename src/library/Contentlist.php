@@ -59,7 +59,7 @@ class CTOCODE_Contentlist
 	{ // 处理查询字段数据
 		$setting = $this->parseSqlJoin ( $sql_join, null );
 
-		// $tableFiledData = ctoSqlGetTableColumn ( $this->modelData['model_table'] );
+		// $tableFiledData = CtoModel::getTableColumn ( $this->modelData['model_table'] );
 		// foreach($tableFiledData as $key=>$val)
 		// {
 		// if($setting[$val['field']] !== NULL)
@@ -82,7 +82,7 @@ class CTOCODE_Contentlist
 		// $this->currtime = time ();
 		// $this->cfg = $cfg2;
 		// $this->usecmt = ($this->cfg['orderby'] == 'cmt' || $this->cfg['orderby'] == 'comment');
-		// ctoSqlGetTableColumn 获取表单字段
+		// CtoModel::getTableColumn 获取表单字段
 
 		// $this->catlogCache = catlog_gcache ();//获取栏目缓存
 		// $this->update = 0;
