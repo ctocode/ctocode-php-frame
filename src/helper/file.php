@@ -14,6 +14,13 @@
  * 如果商业用途务必到官方购买正版授权, 以免引起不必要的法律纠纷.
  * ============================================================================
  */
+function ctoFileInclude($path = '')
+{
+	if(file_exists ( $path )){
+		return include $path;
+	}
+	return false;
+}
 // 文件删除
 function ctoFileDel($dir, $type = TRUE)
 {
