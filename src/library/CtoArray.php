@@ -24,7 +24,7 @@ class CtoArray
 	 * @version 2017-07-20
 	 * @return mixed
 	 */
-	public static function ColumnsNeed($input, $column_keys = null, $index_key = null)
+	public static function columnsNeed($input, $column_keys = null, $index_key = null)
 	{
 		$result = array();
 		$keys = $column_keys;
@@ -56,7 +56,7 @@ class CtoArray
 	 * @version 2019-03-07
 	 * @return mixed
 	 */
-	public static function ColumnsDel(&$allArr, $delKeyArr = null)
+	public static function columnsDel(&$allArr, $delKeyArr = null)
 	{
 		if(is_array ( $allArr )){
 			foreach($delKeyArr as $del_field){

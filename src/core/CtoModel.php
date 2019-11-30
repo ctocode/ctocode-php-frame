@@ -67,16 +67,12 @@ class CtoModel
 	 * @action 执行 更新或者插入
 	 * @execute
 	 */
-	protected function sqlWrite($sql = '', &$last_id = '', $type = 'W')
+	protected function sqlWrite($tableName = '', $fieldData = '', $wsql = '', $in_or_up = false, $type = 'xxx')
 	{
-		if(empty ( $sql )){
-			return false;
-		}
 		if($type == 'R'){
-			$sql_result = ctoDbWrite ( $this->table, $sql, $last_id );
-			return $sql_result;
+			$sql_result = ctoDbWrite ( $this->table, $fieldData, $wsql, $in_or_up );
 		}else{
-			$sql_result = ctoDbWrite ( $this->table, $sql, $last_id );
+			$sql_result = ctoDbWrite ( $this->table, $fieldData, $wsql, $in_or_up );
 		}
 		return $sql_result;
 	}
@@ -254,56 +250,10 @@ class CtoModel
 	protected function sqlParse($table = '', $data = array(), $where_sql = '', $in_or_up = false)
 	{
 		if($in_or_up === true){
-			return $this->ctoSqlParse ( $table, $data, '', $in_or_up );
+			return ctoSqlParse ( $table, $data, '', $in_or_up );
 		}else{
-			return $this->ctoSqlParse ( $table, $data, $where_sql, $in_or_up );
+			return ctoSqlParse ( $table, $data, $where_sql, $in_or_up );
 		}
-	}
-	/**
-	 * @action 解析表单sql语句，更新update，或插入insert
-	 * 返回重新编写好的sql语句
-	 * @author Name zhw Email 343196936@qq.com Data 2016年3月28日
-	 * @param string $table 数据表名
-	 * @param array $data 更新或插入的数据
-	 * @param string $where_sql 查询条件
-	 * @param $in_or_up  存在即更新。必须还有唯一主键
-	 * @return string 返回重新编写好的sql语句
-	 */
-	private function ctoSqlParse($table = '', $data = array(), $where_sql = '', $in_or_up = false)
-	{
-		if($table == '' || ! is_array ( $data )){
-			return '';
-		}
-		if($where_sql != ''){
-			$field_update = '';
-			foreach($data as $k=>$v){
-				$field_update .= ($field_update == '' ? '' : ',') . "`$k`='$v'";
-			}
-			$sql = "UPDATE $table SET $field_update WHERE $where_sql;";
-		}else{
-			$field_key = $field_val = '';
-			foreach($data as $k=>$v){
-				$field_key .= ($field_key == '' ? '' : ',') . "`$k`";
-				if(is_int ( $v )){
-					$field_val .= ($field_val == '' ? '' : ',') . "$v";
-				}else{
-					$field_val .= ($field_val == '' ? '' : ',') . "'$v'";
-				}
-			}
-			if($field_key != '' && $field_val != ''){
-				$sql = "INSERT INTO $table ($field_key) VALUES ($field_val)";
-			}
-
-			if($in_or_up == true){
-				$in_or_up_arr = array();
-				foreach($data as $k=>$v){
-					$in_or_up_arr[] = "`$k`='$v'";
-				}
-				$in_or_up_arr = join ( ",", $in_or_up_arr );
-				$sql .= "   ON DUPLICATE KEY UPDATE " . $in_or_up_arr;
-			}
-		}
-		return $sql;
 	}
 
 	/**
