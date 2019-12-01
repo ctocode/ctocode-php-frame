@@ -124,11 +124,9 @@ class CtoDebug extends CtoErrorcode
 		if(! $fp){
 			return FALSE;
 		}
-
 		$content = $trace . "\r\n客户端ip地址：" . ctoIpGet () . "\r\n" . date ( "Y-m-d H:i:s" ) . "==================THE END==================\r\n";
 		fwrite ( $fp, $content );
 		fclose ( $fp );
-
 		return TRUE;
 	}
 	/**
@@ -145,5 +143,26 @@ class CtoDebug extends CtoErrorcode
 	 */
 	function ctoDebugGetErrorCode($errorStr)
 	{
+	}
+	function halt($var, $exit = true, $mode = 0)
+	{
+		$debug = debug_backtrace ();
+		echo '<pre class="yun-debug" style="background:#C0C0C0;padding:10px;">';
+		echo '<div class="file" style="color:#f00;">',$debug[0]['file'],'    ',$debug[0]['line'],PHP_EOL,'</div>';
+		$mode = (is_array ( $var ) || is_object ( $var )) ? 0 : 1;
+		switch($mode)
+		{
+			case 0:
+				print_r ( $var );
+				break;
+			case 1:
+				var_dump ( $var );
+				break;
+			default:
+				print_r ( $var );
+		}
+		echo '</pre>';
+		if($exit)
+			exit ();
 	}
 }
