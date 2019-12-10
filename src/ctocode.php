@@ -60,7 +60,7 @@ define ( '_CTOCODE_ADDONS_', _CTOCODE_PROJECT_ . 'addons/' );
 // ctocode 自己扩展类库
 define ( '_CTOCODE_EXTEND_', _CTOCODE_PROJECT_ . 'extend/' );
 // 文件上传存放 文件资源路径
-define ( '_CTOCODE_FILE_', _CTOCODE_PROJECT_ . 'public/upload/' );
+define ( '_CTOCODE_FILE_', _CTOCODE_PROJECT_ . 'public/storage/' );
 // 程序运行产生的文件 ,ctocode 数据
 define ( '_CTOCODE_RUNTIME_', _CTOCODE_PROJECT_ . 'runtime/' );
 // composer扩展类库

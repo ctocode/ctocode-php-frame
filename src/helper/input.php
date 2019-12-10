@@ -28,7 +28,37 @@ function ctoRequestAll()
 {
 	return $_REQUEST;
 }
-
+/**
+ * 只接受想要的参数
+ * @param array $needArr
+ * @return array
+ */
+function ctoRequestOnly($needArr = [])
+{
+	$requestData = [];
+	foreach($needArr as $key=>$val){
+		$inputStr = '';
+		$inputDefault = '';
+		if(is_numeric ( $key )){
+			$inputStr = $val;
+		}elseif(is_string ( $key )){
+			$inputStr = $key;
+			$inputDefault = $val;
+		}
+		if(empty ( $inputStr )){
+			continue;
+		}
+		$inputName = $inputStr;
+		$inputType = 'string';
+		if(strpos ( $inputStr, "/" ) !== false){
+			$inputArr = explode ( "/", $inputStr );
+			$inputName = $inputArr[0]; // 接受字段
+			$inputType = $inputArr[1];
+		}
+		$requestData[$inputName] = ctoRequest ( $inputName, $inputType, $inputDefault );
+	}
+	return $requestData;
+}
 /**
  * @action 获取输入参数 自动判断get或者post,支持过滤和默认值
  *  验证 接受表单的name 的值是否符合sql字段中的类型，
@@ -129,7 +159,8 @@ function echoAjaxJsonData($arr = array())
 {
 	// TODO 目前强制为 json 返回
 	header ( 'Content-Type: application/json; charset=utf-8' );
-	exit ( json_encode ( $arr ) );
+	echo json_encode ( $arr );
+	return;
 }
 function echoJsonSuccess($data = '', $msg = '操作成功~')
 {
