@@ -61,6 +61,63 @@ function ctoStrRand($type, $length)
 	}
 	return $random_str;
 }
+function ctoStrNumberEncode($s)
+{
+	preg_match_all ( '/([a-z]+)|([0-9]+)|([^0-9a-z]+)/i', $s, $t );
+	foreach($t[0] as $v){
+		foreach(str_split ( $v, 1 ) as $c)
+			$r[] = (ord ( $c ) > 127 ? 1255 : 999) - ord ( $c );
+	}
+	return implode ( '', $r );
+}
+function ctoStrNumberDecode($s)
+{
+	preg_match_all ( '/1?\d{3}/', $s, $t );
+	foreach($t[0] as $v)
+		$r .= chr ( ($v{0} == 1 ? 1255 : 999) - $v );
+	return $r;
+}
+
+/*
+ * 加密
+ */
+function ctoStrNumberEncode2($tex, $key = null)
+{
+	$key = $key ? $key : "test";
+	$md5str = preg_replace ( '|[0-9/]+|', '', md5 ( $key ) );
+	$key = substr ( $md5str, 0, 2 );
+	$texlen = strlen ( $tex );
+	$rand_key = md5 ( $key );
+	$reslutstr = "";
+	for($i = 0;$i < $texlen;$i ++){
+		$reslutstr .= $tex{$i} ^ $rand_key{$i % 32};
+	}
+	$reslutstr = trim ( base64_encode ( $reslutstr ), "==" );
+	$reslutstr = $key . substr ( md5 ( $reslutstr ), 0, 3 ) . $reslutstr;
+	return $reslutstr;
+}
+/*
+ * 解密
+ */
+function ctoStrNumberDecode2($tex)
+{
+	$key = substr ( $tex, 0, 2 );
+	$tex = substr ( $tex, 2 );
+	$verity_str = substr ( $tex, 0, 3 );
+	$tex = substr ( $tex, 3 );
+	if($verity_str != substr ( md5 ( $tex ), 0, 3 )){
+		// 完整性验证失败
+		return false;
+	}
+	$tex = base64_decode ( $tex );
+	$texlen = strlen ( $tex );
+	$reslutstr = "";
+	$rand_key = md5 ( $key );
+	for($i = 0;$i < $texlen;$i ++){
+		$reslutstr .= $tex{$i} ^ $rand_key{$i % 32};
+	}
+	return $reslutstr;
+}
 /**
  * 生产  $length 位随机码  函数
  * @param $length
@@ -176,7 +233,7 @@ function ctoStrHideTel($phone, $num = 4)
 		return preg_replace ( '/(1[3|4|5|6|7|8|9]{1}[0-9])[0-9]{4}([0-9]{4})/i', '$1' . str_repeat ( '*', $num ) . '$2', $phone );
 	}
 }
-function sum()
+function ctoValueSum()
 {
 	$ary = func_get_args ();
 	$sum = 0;
@@ -192,33 +249,12 @@ function sum()
  */
 function ctoStrNum2cn($num = 0)
 {
-	$cns = array(
-		'零',
-		'一',
-		'二',
-		'三',
-		'四',
-		'五',
-		'六',
-		'七',
-		'八',
-		'九',
-		'十',
-		'十一',
-		'十二',
-		'十三',
-		'十四',
-		'十五',
-		'十六',
-		'十七',
-		'十八',
-		'十九',
-		'二十'
-	);
+	$cns_str = '零、一、二、三、四、五、六、七、八、九、十';
+	$cns_str .= '十一、十二、十三、十四、十五、十六、十七、十八、十九、二十';
+	$cns_arr = explode ( "、", $cns_str );
 	$num = intval ( $num );
-	return isset ( $cns[$num] ) ? $cns[$num] : $num;
+	return $cns_arr[$num] ?? $num;
 }
-
 // 数字转大写
 function ctoStrNumToRmb($num)
 {
@@ -395,6 +431,7 @@ function ctoStrSubstring($str, $len, $dot = '')
 		'&gt;'
 	), $rs );
 	return $rs . $dot;
+
 	if(strpos ( $str, '&lt;' ) !== false){
 		$str = str_replace ( '&lt;', '<', $str );
 	}
@@ -447,91 +484,61 @@ function ctoStrFilterENCODE($str = '')
 	// html转义符 - 符号
 	// $symbolToHtmlcode
 	// $HtmlcodeToSymbo
-	$result = str_replace ( array(
-		'"',
-		"'",
-		'<',
-		'>'
-	), array(
-		'&quot;',
-		'&#039;',
-		'&lt;',
-		'&gt;'
-	), $str );
-
+	$replace_arr = array(
+		'"' => '&quot;',
+		"'" => '&#039;',
+		'<' => '&lt;',
+		'>' => '&gt;'
+	);
+	$result = str_replace ( array_keys ( $replace_arr ), array_values ( $replace_arr ), $str );
 	return $result;
 }
 // 清除空格--等一些字符,留下纯文本
 function ctoStrReplaceTrim($str = '')
 {
-	$qian = array(
-		" ",
-		"　",
-		"\t",
-		"\n",
-		"\r"
+	$replace_arr = array(
+		" " => "",
+		"　" => "",
+		"\t" => "",
+		"\n" => "",
+		"\r" => ""
 	);
-	$hou = array(
-		"",
-		"",
-		"",
-		"",
-		""
-	);
-	$result = str_replace ( $qian, $hou, $str );
+	$result = str_replace ( array_keys ( $replace_arr ), array_values ( $replace_arr ), $str );
 	return $result;
 }
 // 替换html
 function ctoStrReplaceHTML($str = '')
 {
 	// 用于替换
-	$search = array(
-		"'<script[^>]*?>.*?<!-- </script> -->'si", // 去掉 javascript
-		"'<script[^>]*?>.*?</script>'si", // 去掉 javascript
-		"'javascript[^>]*?>.*?'si", // 去掉 javascript
-		"'<style[^>]*?>.*?</style>'si", // 去掉 css
-		"'<[/!]*?[^<>]*?>'si", // 去掉 HTML 标记
-		"'<[\/\!]*?[^<>]*?>'si", // 去掉 HTML 标记
-		"'<!--[/!]*?[^<>]*?>'si", // 去掉 注释标记
-		"'([rn])[s]+'", // 去掉空白字符
-		"'([\r\n])[\s]+'", // 去掉空白字符
-		"'&(quot|#34);'i", // 替换 HTML 实体
-		"'&(amp|#38);'i",
-		"'&(lt|#60);'i",
-		"'&(gt|#62);'i",
-		"'&(nbsp|#160);'i",
-		"'&(iexcl|#161);'i",
-		"'&(cent|#162);'i",
-		"'&(pound|#163);'i",
-		"'&(copy|#169);'i",
-		"'&#(d+);'e",
-		"'&#(\d+);'e"
+	$replace_arr = array(
+		"'<script[^>]*?>.*?<!-- </script> -->'si" => "", // 去掉 javascript
+		"'<script[^>]*?>.*?</script>'si" => "", // 去掉 javascript
+		"'javascript[^>]*?>.*?'si" => "", // 去掉 javascript
+		"'<style[^>]*?>.*?</style>'si" => "", // 去掉 css
+		"'<[/!]*?[^<>]*?>'si" => "", // 去掉 HTML 标记
+		"'<[\/\!]*?[^<>]*?>'si" => "", // 去掉 HTML 标记
+		"'<!--[/!]*?[^<>]*?>'si" => "", // 去掉 注释标记
+		"'([rn])[s]+'" => "", // 去掉空白字符
+		"'([\r\n])[\s]+'" => "", // 去掉空白字符
+
+		// "\1",
+		// "\\1",
+		// 替换 HTML 实体
+		"'&(quot|#34);'i" => "\"",
+		"'&(amp|#38);'i" => "&",
+		"'&(lt|#60);'i" => "<",
+		"'&(gt|#62);'i" => ">",
+		"'&(nbsp|#160);'i" => " ",
+		"'&(iexcl|#161);'i" => chr ( 161 ),
+		"'&(cent|#162);'i" => chr ( 162 ),
+		"'&(pound|#163);'i" => chr ( 163 ),
+		"'&(copy|#169);'i" => chr ( 169 ),
+		"'&#(d+);'e" => "chr(\1)",
+		"'&#(\d+);'e" => "chr(\\1)"
 	);
-	// 作为 PHP 代码运行
-	$replace = array(
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"\1",
-		"\\1",
-		"\"",
-		"&",
-		"<",
-		">",
-		" ",
-		chr ( 161 ),
-		chr ( 162 ),
-		chr ( 163 ),
-		chr ( 169 ),
-		"chr(\1)",
-		"chr(\\1)"
-	);
+
 	// $document为需要处理字符串，如果来源为文件可以$document = file_get_contents('http://www.sina.com.cn');
-	$out = preg_replace ( $search, $replace, $str );
+	$out = preg_replace ( array_keys ( $replace_arr ), array_values ( $replace_arr ), $str );
 
 	$out = str_replace ( "<", "", $out );
 	$out = str_replace ( ">", "", $out );

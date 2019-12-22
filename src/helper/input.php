@@ -164,7 +164,7 @@ function echoAjaxJsonData($arr = array())
 }
 function echoJsonSuccess($data = '', $msg = '操作成功~')
 {
-	echoAjaxJsonData ( [
+	return echoAjaxJsonData ( [
 		'status' => 200,
 		'data' => $data,
 		'msg' => $msg
@@ -172,7 +172,7 @@ function echoJsonSuccess($data = '', $msg = '操作成功~')
 }
 function echoJsonError($msg = '操作失败~', $status = 404)
 {
-	echoAjaxJsonData ( [
+	return echoAjaxJsonData ( [
 		'status' => $status,
 		'msg' => $msg
 	] );

@@ -55,6 +55,10 @@ class CtoModel
 	 * @action 执行 查询
 	 * @query
 	 */
+	protected function query($sql = '')
+	{
+		return $this->sqlRead ( $sql );
+	}
 	protected function sqlRead($sql = '')
 	{
 		if(empty ( $sql )){
@@ -67,6 +71,10 @@ class CtoModel
 	 * @action 执行 更新或者插入
 	 * @execute
 	 */
+	protected function execute($sql = '')
+	{
+		return $this->sqlWrite ( $sql );
+	}
 	protected function sqlWrite($tableName = '', $fieldData = '', $wsql = '', $in_or_up = false, $type = 'xxx')
 	{
 		if($type == 'R'){
