@@ -47,7 +47,7 @@ class CtoLogger
 		if(defined ( "_CTOCODE_RUNTIME_" )){
 			$file_name = _CTOCODE_RUNTIME_ . 'ctocode_log/' . $file_name;
 		}else{
-			$file_name = dirname ( __DIR__, 5 ) . '/runtime/sctocode_log/' . $file_name;
+			$file_name = dirname ( __DIR__, 5 ) . '/runtime/ctocode_log/' . $file_name;
 		}
 		if(! file_exists ( dirname ( $file_name ) )){
 			mkdir ( dirname ( $file_name ), 0777, true );

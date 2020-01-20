@@ -91,14 +91,14 @@ function ctoRequest($name, $type = 'string', $default = '')
 	}else{
 		$return_val = isset ( $param[$name] ) ? $_REQUEST[$name] : '';
 	}
-	if(! empty ( $type )){
-		$return_val = ctoValueCheck ( $return_val, $type, $default );
-	}
 	// if(empty ( $return_val ) && ! isset ( $return_val )){
 	if(empty ( $return_val )){
 		$input = @file_get_contents ( 'php://input' );
 		$input = json_decode ( $input, 1 );
-		return isset ( $input[$name] ) ? $input[$name] : '';
+		$return_val = isset ( $input[$name] ) ? $input[$name] : '';
+	}
+	if(! empty ( $type )){
+		$return_val = ctoValueCheck ( $return_val, $type, $default );
 	}
 	return $return_val;
 }
@@ -114,6 +114,16 @@ function ctoValueCheck($value, $type = 'string', $default = null)
 			if(empty ( $return ) && ! empty ( $default )){
 				$return = $data;
 			}
+			break;
+		case 'string_code': // 允许包含 代码，目前只支持 js、php、html
+			break;
+		case 'string_js': // 允许包含 js 代码
+			break;
+		case 'string_chsDash':
+			// 只保留字母、数字、下划线、破折号、@
+			$data = ! empty ( $default ) ? $default : '';
+			$value = trim ( "{$value}" );
+			$return = ctoSecurityChsDash ( $value );
 			break;
 		case 'string':
 			// addslashes 转义字符,默认开启
@@ -185,12 +195,32 @@ function echoHtmlError($html_str = '')
 	echo $html;
 	exit ();
 }
-
+// echo ctoValueAuthcode ( 'ucneter', 'ENCODE' );
+// echo ctoValueAuthcode ( '9d7dvoyZfZqITJseC9i9pWPxuWZkSQkfKLyAdxSJjsQHJUBh' );
+/**
+ * @param string $string 原文或者密文
+ * @param string $operation 操作(ENCODE | DECODE), 默认为 DECODE
+ * @param string $key 密钥
+ * @param int $expiry 密文有效期, 加密时候有效， 单位 秒，0 为永久有效
+ * @return string 处理后的 原文或者 经过 base64_encode 处理后的密文
+ *
+ * @example
+ *  $a = authcode('abc', 'ENCODE', 'key');
+ *  $b = authcode($a, 'DECODE', 'key');  // $b(abc)
+ *
+ *  $a = authcode('abc', 'ENCODE', 'key', 3600);
+ *  $b = authcode('abc', 'DECODE', 'key'); // 在一个小时内，$b(abc)，否则 $b 为空
+ */
 // string(字符串) operation(DECODE-解密 其他-加密) key(混淆字符) expiry(过期时间) fixed(加密结果是否固定)
-function ctoValueAuthcode($string, $operation = 'DECODE', $key = '', $expiry = 600, $fixed = false)
+function ctoValueAuthcode($string, $operation = 'DECODE', $key = '', $expiry = 3600, $fixed = false)
 {
 	$ckey_length = $fixed ? 0 : 4;
-	$key = md5 ( $key ? $key : 'default_key' );
+	// 随机密钥长度 取值 0-32;
+	// 加入随机密钥，可以令密文无任何规律，即便是原文和密钥完全相同，加密结果也会每次不同，增大破解难度。
+	// 取值越大，密文变动规律越大，密文变化 = 16 的 $ckey_length 次方
+	// 当此值为 0 时，则不产生随机密钥
+
+	$key = md5 ( $key ? $key : 'default_key' ); // 这里可以填写默认key值
 	$keya = md5 ( substr ( $key, 0, 16 ) );
 	$keyb = md5 ( substr ( $key, 16, 16 ) );
 	$keyc = $ckey_length ? ($operation == 'DECODE' ? substr ( $string, 0, $ckey_length ) : substr ( md5 ( microtime () ), - $ckey_length )) : '';

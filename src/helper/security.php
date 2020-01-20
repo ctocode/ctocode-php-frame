@@ -16,6 +16,19 @@
  */
 
 /**
+ * @todo 只保留字母、英文、数字、下划线、破折号、@
+ * @author ctocode-zhw
+ * @param  
+ */
+function ctoSecurityChsDash($chars, $encoding = 'utf8')
+{
+	$pattern = ($encoding == 'utf8') ? '/[\x{4e00}-\x{9fa5}a-zA-Z0-9\@\_\-]/u' : '/[\x80-\xFF]/';
+	preg_match_all ( $pattern, $chars, $result );
+	$temp = join ( '', $result[0] );
+	return $temp;
+}
+
+/**
  * @todo 递归转义数组
  * @author ctocode-zwj
  * @param mixed $value 待转义变量，数组/字符串
