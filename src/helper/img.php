@@ -37,11 +37,11 @@ function ctoImgCheck($img_path = '')
 		'image/png',
 		'image/x-png',
 		'image/xpng',
-		'image/wbmp' 
+		'image/wbmp'
 	), true )){
 		return array(
 			'type' => 'no',
-			'msg' => '图片类型错误' 
+			'msg' => '图片类型错误'
 		);
 	}
 	// 获取后缀名
@@ -53,9 +53,38 @@ function ctoImgCheck($img_path = '')
 		'filename' => $imgData2['filename'],
 		'extension' => $_ext,
 		'basename' => $imgData2['basename'],
-		'imgData' => $imgData 
+		'imgData' => $imgData
 	);
 }
+/*
+ * 图片上传
+ * $save_path 保存路径
+ */
+function ctoImgDoPath($save_path, $save_type = 1)
+{
+	// 存储路径,保存类别 ,默认： 根路径/年/月日
+	if($save_type == 1){
+		$patharr = array(
+			$save_path
+		);
+	}elseif($save_type == 2){
+		$patharr = array(
+			$save_path
+		);
+		$return_path = $patharr[0];
+	}
+	// 如果路径不存在,创建文件夹
+	foreach($patharr as $val){
+		if(! file_exists ( $val )){
+			if(! mkdir ( $val, 0777, true )){ // 如果指定文件夹不存在，则创建文件夹,权限0777
+				exit ( '创建保存文件目录失败,请联系管理员检查目录权限' );
+			}
+		}
+	}
+	return TRUE;
+}
+
+// 远程下载2
 function ctoImgRemoteDown2($url, $path = 'images/')
 {
 	$ch = curl_init ();
@@ -93,19 +122,19 @@ function ctoImgRemoteDown($imgUrl, $saveDir = './', $fileName = null)
 	$imgCheck = ctoImgCheck ( $imgUrl );
 	if($imgCheck['type'] != 'ok')
 		return $imgCheck;
-	
+
 	if(empty ( $fileName )){
 		// 生成唯一的文件名
 		// $fileName = uniqid ( time (), true ) . $imgCheck['extension'];
 		$fileName = $imgCheck['basename'];
 	}
-	
+
 	// 开始抓取远程图片
 	ob_start ();
 	readfile ( $imgUrl );
 	$imgInfo = ob_get_contents ();
 	ob_end_clean ();
-	
+
 	if(! file_exists ( $saveDir )){
 		mkdir ( $saveDir, 0777, true );
 	}
@@ -117,11 +146,11 @@ function ctoImgRemoteDown($imgUrl, $saveDir = './', $fileName = null)
 		fwrite ( $fp, substr ( $imgInfo, $i * $_inx, $_inx ) );
 	}
 	fclose ( $fp );
-	
+
 	return array(
 		'ext' => $imgCheck['extension'],
 		'file_name' => $fileName,
-		'save_path' => $saveDir . $fileName 
+		'save_path' => $saveDir . $fileName
 	);
 }
 /**
@@ -142,10 +171,10 @@ function ctoImgRemoteDown($imgUrl, $saveDir = './', $fileName = null)
  * @return boolean
  */
 function ctoImgCut($oldfile = '', $newfile = '', $cutOpt = array(
-		'width'=>100,
-		'height'=>100,
-		'x'=>0,
-		'y'=>0,
+	'width' => 100,
+	'height' => 100,
+	'x' => 0,
+	'y' => 0
 ), $quality = 100, $sharp = false)
 {
 	if(! is_string ( $oldfile ) || $oldfile == '' || ! is_file ( $oldfile )){
@@ -155,7 +184,7 @@ function ctoImgCut($oldfile = '', $newfile = '', $cutOpt = array(
 	$imgCheck = ctoImgCheck ( $oldfile );
 	if($imgCheck['type'] != 'ok')
 		return false;
-	
+
 	$old_width = $imgCheck['imgData'][0];
 	$old_height = $imgCheck['imgData'][1];
 	if(! $old_width || ! $old_height){

@@ -91,7 +91,7 @@ class CtoRestfulApiBase
 		'200' => ' OK - [GET]：服务器成功返回用户请求的数据，该操作是幂等的（Idempotent）。',
 		'201' => ' CREATED - [POST/PUT/PATCH]：用户新建或修改数据成功。',
 		'202' => ' Accepted - [*]：表示一个请求已经进入后台排队（异步任务）',
-		203 => 'Non-Authoritative Information',
+		'203' => 'Non-Authoritative Information',
 		'204' => ' NO CONTENT - [DELETE]：用户删除数据成功。',
 		205 => 'Reset Content',
 		206 => 'Partial Content',
@@ -179,7 +179,7 @@ class CtoRestfulApiBase
 	 * 十、Hypermedia API
 	 * @remarks
 	 * RESTful API最好做到Hypermedia，即返回结果中提供链接，连向其他API方法，使得用户不查文档，也知道下一步应该做什么。
-	 * 比如，当用户向api.example.com的根目录发出请求，会得到这样一个文档。
+	 * 比如，当用户向 api.example.com 的根目录发出请求，会得到这样一个文档。
 	 * * ----------
 	 * Hypermedia API的设计被称为HATEOAS。
 	 * Github的API就是这种设计，访问api.github.com会得到一个所有可用API的网址列表。

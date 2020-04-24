@@ -58,30 +58,6 @@ function ctoSessionDel($timeLong = 86400)
 		}
 	}
 }
-function xxxxxxxxxxxxx()
-{
-	// // =================================设置====================
-	// ini_set ( 'session.cookie_domain', '.bo.com' );
-	// session_start ();
-	// // $session_id = session_id ();
-	// // setcookie ( "cookie_sn", $session_id, 100, "/", ".bo.com", 1 );
-	// // echo $session_id;
-	// $_SESSION['xxxxxx'] = array(
-	// 0 => 'asdad',
-	// 1 => '123123'
-	// );
-	// $_SESSION['xxx3'] = 'ctocode-解决php跨域session----11111111111111111111111';
-	// echo '赋予的session:【 ' . $_SESSION['xxx3'] . ' 】<br>';
-	// exit ();
-	// // =================================获取====================
-	// ini_set ( 'session.cookie_domain', '.bo.com' );
-	// session_start ();
-	// // $cookie = empty ( $_COOKIE['cookie_sn'] ) ? '' : $_COOKIE['cookie_sn'];
-	// // session_id ( $_COOKIE['cookie_sn'] );
-	// echo '获取的session:【 ' . $_SESSION['xxxxx'] . ' 】<br>';
-	// exit ();
-}
-
 /**
  * 设置cookie
  */
@@ -89,7 +65,7 @@ function ctoCookieSet($name, $value, $kptime = 0, $path = '/')
 {
 	$extime = $kptime == 0 ? 0 : time () + $kptime;
 	$safe = $_SERVER['SERVER_PORT'] == '443' ? 1 : 0;
-	$domain = defined ( '_DOMAIN_PUBLIC_COOKIE_' ) ? _DOMAIN_PUBLIC_COOKIE_ : '';
+	$domain = env ( 'ctocode.url_domain_base', '' );
 	setcookie ( $name, $value, $extime, $path, $domain, $safe );
 	setcookie ( $name . '__hash', substr ( md5 ( 'asdas' ), 0, 16 ), $extime, $path, $domain, $safe );
 	// 原来是用ip来加密的，现用浏览器信息
@@ -100,7 +76,7 @@ function ctoCookieSet($name, $value, $kptime = 0, $path = '/')
  */
 function ctoCookieClear($name = '')
 {
-	$domain = defined ( '_DOMAIN_PUBLIC_COOKIE_' ) ? _DOMAIN_PUBLIC_COOKIE_ : '';
+	$domain = env ( 'ctocode.url_domain_base', '' );
 	$safe = $_SERVER['SERVER_PORT'] == '443' ? 1 : 0;
 	setcookie ( $name, '', time () - 360000, "/", $domain, $safe );
 	setcookie ( $name . '__hash', '', time () - 360000, "/", $domain, $safe );

@@ -50,6 +50,7 @@ function ctoCheck($type = NULL, $str = NULL)
 			// $regex ="/^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/"
 			// $regex = "/^1[34578]{1}\d{9}$/";
 			// $regex = '/^((0\d{2,3}-\d{7,8})|(\d{7,8})|(1[35847]\d{9}))$/';
+			// '/^0?(13|14|15|17|18)[0-9]{9}$/'
 			$regex = '/^1[3|4|5|6|7|8|9][0-9]\d{4,8}$/';
 			if(strlen ( $str ) != 11){
 				return false;
@@ -193,6 +194,31 @@ function ctoCheckBrowser()
 	}else{
 		return false;
 	}
+}
+function ctoCheckOS()
+{
+	$agent = strtolower ( $_SERVER['HTTP_USER_AGENT'] );
+	if(strpos ( $agent, 'windows nt' )){
+		$platform = 'windows';
+	}elseif(strpos ( $agent, 'macintosh' )){
+		$platform = 'mac';
+	}elseif(strpos ( $agent, 'ipod' )){
+		$platform = 'ipod';
+	}elseif(strpos ( $agent, 'ipad' )){
+		$platform = 'ipad';
+	}elseif(strpos ( $agent, 'iphone' )){
+		$platform = 'iphone';
+	}elseif(strpos ( $agent, 'android' )){
+		$platform = 'android';
+	}elseif(strpos ( $agent, 'unix' )){
+		$platform = 'unix';
+	}elseif(strpos ( $agent, 'linux' )){
+		$platform = 'linux';
+	}else{
+		$platform = 'other';
+	}
+
+	return $platform;
 }
 function ctoCheckSubstrs($substrs, $text)
 {

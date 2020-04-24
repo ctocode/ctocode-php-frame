@@ -51,15 +51,4 @@ class CtoRestfulApiResponse extends CtoRestfulApiBase
 		$html .= "</table>";
 		return $html;
 	}
-
-	// 文档风格
-	protected function docApiStyle()
-	{
-		$style = '';
-		$style .= '<style>';
-		$style .= 'body{margin: 20px;font: 13px Helvetica Neue,Helvetica,PingFang SC,\5FAE\8F6F\96C5\9ED1,Tahoma,Arial,sans-serif;font-family: "Microsoft YaHei" ! important;}';
-		$style .= 'p{margin:0;padding:0;margin-bottom:2px;letter-spacing:1px;} ';
-		$htmls .= '</style>';
-		return $style;
-	}
 }

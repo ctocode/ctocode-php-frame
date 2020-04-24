@@ -116,7 +116,6 @@ class Controller extends \think\Controller
 		$auto_themes = '';
 		// 【pc】获取用户定制页面主题
 		$_tplUrl = $_domainUrl . 'themes/default/';
-		$this->assign ( '__themesName', 'default' );
 		$auto_themes = 'default';
 
 		// 自动加载 addons 组件相关样式
@@ -126,10 +125,6 @@ class Controller extends \think\Controller
 			'con' => strtolower ( $controller_name )
 		) );
 		$this->assign ( '_tplUrl', $_tplUrl );
-
-		$this->assign ( '_comData', array(
-			'public' => '/public/' . $auto_themes . '/'
-		) );
 
 		// 处理登录者信息
 		$_businessData = session ( 'console_bussiness' );

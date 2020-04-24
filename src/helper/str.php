@@ -61,6 +61,32 @@ function ctoStrRand($type, $length)
 	}
 	return $random_str;
 }
+/**
+ * 生产  $length 位随机码  函数
+ * @param $length
+ * @param bool|false $numeric
+ * @return string 生成指定长度的唯一随机字符串并返回
+ *
+ */
+function ctoStrRandom($length = 6, $numeric = false, $exper = '')
+{
+	// PHP_VERSION < '4.2.0' ? mt_srand ( ( double ) microtime () * 1000000 ) : mt_srand ();
+	$sign = microtime () . $_SERVER['DOCUMENT_ROOT'];
+	// $sign = $exper . print_r ( $_SERVER, 1 ) . microtime ();
+	$seed = base_convert ( md5 ( $sign ), 16, $numeric ? 10 : 35 );
+	$seed = $numeric ? (str_replace ( '0', '', $seed ) . '012340567890') : ($seed . 'zZ' . strtoupper ( $seed ));
+	if($numeric){
+		$hash = '';
+	}else{
+		$hash = chr ( rand ( 1, 26 ) + rand ( 0, 1 ) * 32 + 64 );
+		$length --;
+	}
+	$max = strlen ( $seed ) - 1;
+	for($i = 0;$i < $length;$i ++){
+		$hash .= $seed[mt_rand ( 0, $max )];
+	}
+	return $hash;
+}
 function ctoStrNumberEncode($s)
 {
 	preg_match_all ( '/([a-z]+)|([0-9]+)|([^0-9a-z]+)/i', $s, $t );
@@ -117,32 +143,6 @@ function ctoStrNumberDecode2($tex)
 		$reslutstr .= $tex{$i} ^ $rand_key{$i % 32};
 	}
 	return $reslutstr;
-}
-/**
- * 生产  $length 位随机码  函数
- * @param $length
- * @param bool|false $numeric
- * @return string 生成指定长度的唯一随机字符串并返回
- * 
- */
-function ctoStrRandom($length = 6, $numeric = false, $exper = '')
-{
-	// PHP_VERSION < '4.2.0' ? mt_srand ( ( double ) microtime () * 1000000 ) : mt_srand ();
-	$sign = microtime () . $_SERVER['DOCUMENT_ROOT'];
-	// $sign = $exper . print_r ( $_SERVER, 1 ) . microtime ();
-	$seed = base_convert ( md5 ( $sign ), 16, $numeric ? 10 : 35 );
-	$seed = $numeric ? (str_replace ( '0', '', $seed ) . '012340567890') : ($seed . 'zZ' . strtoupper ( $seed ));
-	if($numeric){
-		$hash = '';
-	}else{
-		$hash = chr ( rand ( 1, 26 ) + rand ( 0, 1 ) * 32 + 64 );
-		$length --;
-	}
-	$max = strlen ( $seed ) - 1;
-	for($i = 0;$i < $length;$i ++){
-		$hash .= $seed[mt_rand ( 0, $max )];
-	}
-	return $hash;
 }
 
 // 驼峰命名转下划线命名
