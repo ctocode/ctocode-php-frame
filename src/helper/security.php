@@ -228,3 +228,21 @@ function check_hashcode($s = '')
 	}
 	return authcode ( $v, 'DECODE', 'YouDianYiSi' ) == 'BAIYU/POST/CODE' ? true : false;
 }
+
+/**
+ * stripslashes() 函数删除由 addslashes() 函数添加的反斜杠。
+ * 提示：该函数可用于清理从数据库中或者从 HTML 表单中取回的数据。
+ * @param string $str
+ * @return string
+ */
+function deldanger($str = '')
+{
+	if(trim ( $str ) == '')
+		return '';
+	$str = stripslashes ( $str );
+	$str = DelXSS ( $str );
+	$str = preg_replace ( "/[\r\n\t ]{1,}/", ' ', $str );
+	$str = preg_replace ( "/script/i", 'ｓｃｒｉｐｔ', $str );
+	$str = preg_replace ( "/<[/]{0,1}(link|meta|ifr|fra)[^>]*>/i", '', $str );
+	return addslashes ( $str );
+}

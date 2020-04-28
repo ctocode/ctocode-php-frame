@@ -81,7 +81,6 @@ include_once __DIR__ . '/helper/input.php';
 include_once __DIR__ . '/helper/ip.php'; // ip
 include_once __DIR__ . '/helper/language.php'; // 语言
 include_once __DIR__ . '/helper/security.php'; // 安全处理
-include_once __DIR__ . '/helper/session.php'; // session处理
 include_once __DIR__ . '/helper/str.php'; // 字符串
 include_once __DIR__ . '/helper/time.php'; // 时间
 
