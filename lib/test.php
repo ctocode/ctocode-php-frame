@@ -1,6 +1,6 @@
 <?php
 
-namespace ctocode\phpframe;
+namespace ctocode\tests;
 
 class Test
 {

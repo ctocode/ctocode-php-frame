@@ -1,6 +1,6 @@
 <?php
 
-namespace ctocode\phpframe\core;
+namespace ctocode\core;
 
 /**
  * 【ctocode】      核心文件 - 模型

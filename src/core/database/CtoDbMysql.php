@@ -1,6 +1,6 @@
 <?php
 
-namespace ctocode\phpframe\core\database;
+namespace ctocode\core\database;
 
 use ctocode\library\CtoLogger;
 

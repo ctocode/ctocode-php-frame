@@ -1,6 +1,6 @@
 <?php
 
-namespace ctocode\phpframe\core;
+namespace ctocode\core;
 
 class CtoLoader
 {
