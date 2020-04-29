@@ -14,10 +14,7 @@
 	"autoload" : {
 		"psr-4" : {
 			"ctocode\\" : "src/"
-		},
-		"files" : [
-			"src/ctocode.php"
-		]
+		}
 	},
 	"minimum-stability" : "dev"
 }

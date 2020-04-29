@@ -113,7 +113,7 @@ class SmsSdkCommon
 			'keyString' => 'ctocode20180505',
 			'ivString' => 'ctocode6666'
 		);
-		$aes = new \ctocode\phpframe\library\CtoAes ( $aesSett );
+		$aes = new \ctocode\library\CtoAes ( $aesSett );
 		// base64_decode获取手机号
 		return $aes->decrypt ( $mobile, 'base64' );
 	}

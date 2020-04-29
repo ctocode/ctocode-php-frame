@@ -1,6 +1,6 @@
 <?php
 
-namespace ctocode\phpframe\library;
+namespace ctocode\library;
 
 /**
  * 上传类
@@ -176,7 +176,7 @@ class CtoUpload
 			'doc',
 			'mp3'
 		);
-		$exttrue = CtoFiles::getFileExt ( $upfile['name'] );
+		$exttrue = \ctocode\helper\HelperFiles::getFileExt ( $upfile['name'] );
 		$upary = empty ( $upary ) ? join ( ',', $safeext ) : $upary;
 		// 格式不允许
 		if(! in_array ( $exttrue, explode ( ',', $upary ) )){

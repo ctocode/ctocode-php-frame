@@ -1,6 +1,6 @@
 <?php
 
-namespace ctocode\phpframe\library;
+namespace ctocode\library;
 
 class CtoCache
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace ctocode\phpframe\library;
+namespace ctocode\library;
 
 /**
  * 物流配送相关类

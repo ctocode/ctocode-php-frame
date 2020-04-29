@@ -1,6 +1,6 @@
 <?php
 
-namespace ctocode\phpframe\helper;
+namespace ctocode\helper;
 
 /**
  * 文件处理

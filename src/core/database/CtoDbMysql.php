@@ -2,7 +2,7 @@
 
 namespace ctocode\phpframe\core\database;
 
-use ctocode\phpframe\library\CtoLogger;
+use ctocode\library\CtoLogger;
 
 class CtoDbMysql
 {

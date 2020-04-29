@@ -1,6 +1,6 @@
 <?php
 
-namespace ctocode\phpframe\library;
+namespace ctocode\library;
 
 class Coordinate
 {
@@ -23,7 +23,6 @@ class CoordinateTool
 	private static $pi = 3.14159265358979324; // 圆周率
 	private static $a = 6378245.0; // WGS 长轴半径
 	private static $ee = 0.00669342152296594323; // WGS 偏心率的平方
-	private static $ee = 0.00669342162296594323; // WGS 偏心率的平方
 	/**
 	 * 将火星坐标系GCJ-02 坐标 转换成百度坐标系 BD-09 坐标
 	 * @param $gc_loc 火星坐标点(Class Coordinate)

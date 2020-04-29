@@ -1,6 +1,6 @@
 <?php
 
-namespace ctocode\phpframe\library;
+namespace ctocode\library;
 
 // PHP Token(令牌)设计 设计目标: 避免重复提交数据.
 // 检查来路,是否是外部提交 匹配要执行的动作(如果有多个逻辑在同一个页面实现,比如新增,删除,修改放到一个PHP文件里操作)

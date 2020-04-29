@@ -1,6 +1,6 @@
 <?php
 
-namespace ctocode\phpframe\library;
+namespace ctocode\library;
 
 // 数据采集，doGET,doPOST,文件下载，
 class CtoHttp

@@ -1,6 +1,6 @@
 <?php
 
-namespace ctocode\phpframe\library;
+namespace ctocode\library;
 
 /** 
  * @class RESTful 响应输出类 ApiResponse   

@@ -1,6 +1,6 @@
 <?php
 
-namespace ctocode\phpframe\helper;
+namespace ctocode\helper;
 
 /**
  * 【ctocode】      常用函数类 - array相关处理
