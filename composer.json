@@ -13,9 +13,11 @@
 	},
 	"autoload" : {
 		"psr-4" : {
-			"ctocode\\phpframe\\" : "src/",
-			"ctocode\\phpframe\\library\\" : "src/library/"
-		}
+			"ctocode\\" : "src/"
+		},
+		"file":[
+			"src/ctocode.php"
+		]
 	},
 	"minimum-stability" : "dev"
 }
