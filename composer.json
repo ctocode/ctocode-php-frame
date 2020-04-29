@@ -15,7 +15,7 @@
 		"psr-4" : {
 			"ctocode\\" : "src/"
 		},
-		"file":[
+		"files" : [
 			"src/ctocode.php"
 		]
 	},
