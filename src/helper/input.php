@@ -110,7 +110,7 @@ function ctoValueCheck($value, $type = 'string', $default = null)
 		case 'int':
 			$data = ! empty ( $default ) ? $default : 0;
 			$value = trim ( "{$value}" );
-			$return = is_numeric ( $value ) ? $value : 0;
+			$return = is_numeric ( $value ) ? floatval ( $value ) : 0;
 			if(empty ( $return ) && ! empty ( $default )){
 				$return = $data;
 			}
