@@ -13,7 +13,7 @@ class SmsSdkChuanglan extends SmsSdkCommon implements SmsSdkInterface
 	}
 	public static function sdkSmsSend($smsParam = [], $sdkOpt = [], $mobile = '', $code = '', $type = '')
 	{
-		$sms = new ChuanglanSMS ( 'I4407260', 'gGs8ncAvEJdb2e', 2 );
+		$sms = new ChuanglanSMS ( $sdkOpt['sms_appkey'], $sdkOpt['sms_appsecret'], 2 );
 		$sms_template_msg = '【签名】短信内容，您的短信验证码是';
 		$result = $sms->sendInternational ( $mobile, $sms_template_msg );
 		return json_decode ( $result, true );

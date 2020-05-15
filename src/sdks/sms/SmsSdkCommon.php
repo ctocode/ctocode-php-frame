@@ -33,7 +33,7 @@ class SmsSdkCommon
 	{
 		$field = array();
 		$field['sms_is_read'] = 1;
-		Db::table ( 'addons_ctomsg_sms_log' )->where ( 'sys_id', $sys_id )->update ( $field );
+		Db::table ( 'addons_ctosms_log' )->where ( 'sys_id', $sys_id )->update ( $field );
 	}
 	// 记录短信记录
 	protected function addSmsLog($requestData, $mobile = '', $code = '')
@@ -47,7 +47,7 @@ class SmsSdkCommon
 		$field['business_id'] = $requestData['business_id'] ?? 0;
 		$field['sms_mobile'] = $mobile;
 		$field['sms_code'] = $code;
-		$sql_result = Db::table ( 'addons_ctomsg_sms_log' )->save ( $field );
+		$sql_result = Db::table ( 'addons_ctosms_log' )->save ( $field );
 		if($sql_result === FALSE){
 			// TODO 写入错误日志
 		}
@@ -87,7 +87,7 @@ class SmsSdkCommon
 		 * 验证短信黑名单
 		 */
 		//
-		$blackModel = loadRpcModelClass ( 'ctomsg', 'SmsBlack' );
+		$blackModel = loadRpcModelClass ( 'comtool', 'SmsBlack' );
 		$blackData = $blackModel->getListData ( array(
 			'black_flag' => $mobile
 		) );
@@ -148,7 +148,7 @@ class SmsSdkCommon
 		 * - 短信风险识别，先获取短信风险值，然后与数据库的对比
 		 */
 		//
-		$cmsSettingRpcModelObj = loadRpcModelClass ( 'adminbase', 'PlatSetting' );
+		$cmsSettingRpcModelObj = loadRpcModelClass ( 'saasplat', 'PlatSetting' );
 		$safResult = $cmsSettingRpcModelObj->getRowData ( [
 			'setts_key' => 'saf_register_open'
 		] )['data'];

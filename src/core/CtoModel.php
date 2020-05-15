@@ -18,10 +18,14 @@ namespace ctocode\core;
  */
 class CtoModel
 {
+	use CtoTraitModelCheck,CtoTraitModelParse;
 	protected $tableType = 'mysql';
 	protected $tableName = ''; // 当前模型.除开后缀的名字
 	protected $tablePrimary = ''; // 当前模型.表单主键
 	protected $table = ''; // 当前模型.表单名称
+
+	// 是否自动解析
+	protected $_autoAnalys = false;
 
 	/* 数据库连接对象 */
 	protected $_dbObj;
@@ -59,12 +63,20 @@ class CtoModel
 	{
 		return $this->sqlRead ( $sql );
 	}
+	protected function analysField($readData, $tableFields)
+	{
+		$anaObj = new CtoModelAnalys ();
+		return $anaObj->analysField ( $readData, $tableFields );
+	}
 	protected function sqlRead($sql = '')
 	{
 		if(empty ( $sql )){
 			return false;
 		}
 		$sql_result = ctoDbRead ( $sql );
+		if($this->_autoAnalys){
+			return $this->analysField ( $sql_result, $this->_tableFields );
+		}
 		return $sql_result;
 	}
 	/**
@@ -186,121 +198,13 @@ class CtoModel
 		return true;
 	}
 	/**
-	 * @action 【验证函数】--价格验证
-	 * @author ctocode-zhw
-	 * @version 2017-03-14
-	 */
-	protected function checkPrice($value, $default = 0)
-	{
-		$data = ! empty ( $default ) ? $default : 0;
-		$value = trim ( "{$value}" );
-		$value = is_numeric ( $value ) ? $value : 0;
-		$int_money = is_numeric ( $data );
-		if(is_numeric ( $value )){
-			$int_money = ($value * 100);
-			// $int_money = intval ( $int_money );
-			$int_money = ( float ) ($int_money);
-		}
-		return $int_money;
-	}
-	/**
-	 * @action 【验证函数】--mysql【varchat】验证
-	 * @author ctocode-zhw
-	 * @version 2017-03-14
-	 */
-	protected function checkVarchar($value = '', $default = '')
-	{
-		if(! empty ( $value )){
-			if(is_string ( $value )){
-				return trim ( $value );
-			}
-			return $value;
-		}else{
-			return '';
-		}
-	}
-	/**
-	 * @action 【验证函数】--mysql【int】验证
-	 * @author ctocode-zhw
-	 * @version 2017-03-14
-	 */
-	protected function checkInt($value = 0, $default = 0)
-	{
-		$data = ! empty ( $default ) ? $default : 0;
-		$value = trim ( "{$value}" );
-		$return = is_numeric ( $value ) ? ( int ) ($value) : 0;
-		if(empty ( $return ) && ! empty ( $default )){
-			$return = $data;
-		}
-		return $return;
-	}
-	/**
-	 * @action 【验证函数】--mysql【date转int】验证
-	 * @author ctocode-zhw
-	 * @version 2017-03-14
-	 */
-	protected function checkDate($value, $default = 0)
-	{
-		$data = ! empty ( $default ) ? $default : 0;
-		$value = trim ( "{$value}" );
-		$time = strtotime ( $value );
-		$return = $time ? $time : 0;
-		if(empty ( $return ) && ! empty ( $default )){
-			$return = $data;
-		}
-		return $return;
-	}
-	/**
-	 * @action SQL语句解析函数
-	 * @author ctocode-zhw
-	 * @version 2017-03-14
-	 */
-	protected function sqlParse($table = '', $data = array(), $where_sql = '', $in_or_up = false)
-	{
-		if($in_or_up === true){
-			return ctoSqlParse ( $table, $data, '', $in_or_up );
-		}else{
-			return ctoSqlParse ( $table, $data, $where_sql, $in_or_up );
-		}
-	}
-
-	/**
-	 * @action SQL语句验证函数,防注入 防CC、至强抗DDoS 等
-	 * @author ctocode-zhw
-	 * @version 2017-03-14
-	 */
-	protected function sqlVerify($sql = null)
-	{
-		return $sql;
-	}
-	protected function checkStrIsComma($strs = null)
-	{
-		$str = str_replace ( "，", ",", $strs );
-		$str = str_replace ( ",", ",", $str );
-		if(strpos ( $str, ',' ) !== false){
-			return false;
-		}
-		return true;
-		// if (preg_match ("/，/", "Welcome to ，hi-docs.com.")) {
-		// echo "A match was found.";
-		// } else {
-		// echo "A match was not found.";
-		// }
-		// if (strstr($str, '，')) {
-		// echo 'exist comma!'; //含有逗号
-		// } else {
-		// echo 'not exist comma!'; //不含逗号
-		// }
-	}
-
-	/**
 	 * @action 获取数据表的字段
 	 * @author ctocode-zhw
 	 * @version 2017-07-19
 	 * @param string $table_name
 	 * @return string|string[][]
 	 */
-	function getTableColumn($table_name = '')
+	public function getTableColumn($table_name = '')
 	{
 		if(empty ( $table_name )){
 			return '';
@@ -326,7 +230,12 @@ class CtoModel
 		}
 		return '';
 	}
-	public function getTableName($sqlString = '')
+	/**
+	 * 获取 sql 语句里面的 table 表名
+	 * @param string $sqlString
+	 * @return mixed|string
+	 */
+	public function getSqlTableName($sqlString = '')
 	{
 		$sqlString = str_replace ( '`', '', trim ( $sqlString ) ) . ' AND 1=1 ';
 		$key = strtolower ( substr ( $sqlString, 0, 6 ) );

@@ -5,7 +5,7 @@ namespace ctocode\library;
 /**
  * @class  表单，字段限定查询语句拼接
  * @author ctocode-zhw
- * @version 2017-07-20
+ * @version 2015-07-20
  * @link http://ctocode.com
  */
 class CTOCODE_Contentlist
@@ -46,15 +46,6 @@ class CTOCODE_Contentlist
 	// 'extra' => '',
 	// 'debug' => 0 /* 开启debug模式,输出sql语句 */
 	);
-	/**
-	 * 
-	 * @param number $model_id // 模型 id
-	 * @param array $setting
-	 */
-	public function __construct($model_id = 0, $sql_join = array())
-	{
-		// getParseSql
-	}
 	public function getParseSql($sql_join = '')
 	{ // 处理查询字段数据
 		$setting = $this->parseSqlJoin ( $sql_join, null );
@@ -71,26 +62,10 @@ class CTOCODE_Contentlist
 		foreach($this->defaults as $k=>$v){
 			$cfg2[$k] = isset ( $setting[$k] ) ? $setting[$k] : $v;
 		}
-		// order by 排序
-		$cfg2['orderby'] = trim ( $cfg2['orderby'] );
-		$cfg2['ordersort'] = strtoupper ( trim ( $cfg2['ordersort'] ) );
-		$cfg2['ordersort'] = in_array ( $cfg2['ordersort'], array(
-			'DESC',
-			'ASC'
-		) ) ? $cfg2['ordersort'] : 'DESC';
-		//
 		// $this->currtime = time ();
 		// $this->cfg = $cfg2;
-		// $this->usecmt = ($this->cfg['orderby'] == 'cmt' || $this->cfg['orderby'] == 'comment');
 		// CtoModel::getTableColumn 获取表单字段
-
-		// $this->catlogCache = catlog_gcache ();//获取栏目缓存
-		// $this->update = 0;
 		return $cfg2;
-	}
-	function contentlist($setting = array())
-	{
-		$this->__construct ( $setting );
 	}
 	// 用于 sql_join 默认解析
 	function parseSqlJoin($default = '', $atts = null)
@@ -182,41 +157,6 @@ class CTOCODE_Contentlist
 		}
 		return $this->getlist_data ( $cacheids );
 	}
-	function getUpdate()
-	{
-		return $this->update;
-	}
-
-	/*
-	 * 为了得到 缓存文件上次更新时间 从common.func.php拷贝了此函数 稍做了修改 *************************************************************
-	 */
-	function getCache($key = '', $dir = 'com', $time = - 1, $slize = true)
-	{
-		global $_glb;
-		if(trim ( $key ) == '')
-			return false;
-		$md5 = md5 ( $key . $_glb['sitekey'] );
-		$cfile = BAIYU_DATA . '/cache' . ($dir == '' ? '' : '/' . $dir) . '/' . substr ( $md5, 0, 2 ) . '/' . substr ( $md5, 2, 2 ) . '/' . substr ( $md5, 4, 28 ) . ($slize ? '.inc' : '.php');
-		if(! is_file ( $cfile )){
-			$this->update = $this->currtime;
-			return false;
-		}
-		$date = @filemtime ( $cfile );
-		if($time == - 1){
-			$this->update = $date;
-			$rs = parsefcache ( $cfile, $slize );
-			return $rs;
-		}
-		$time = intval ( $time );
-		if(($date + $time) < $this->currtime){
-			$this->update = $this->currtime;
-			return false;
-		}
-		$this->update = $date;
-		$rs = parsefcache ( $cfile, $slize );
-		return $rs;
-	}
-
 	/*
 	 * 对查询得到的 ids 数据做 排序 附加模型ID 处理 *************************************************************
 	 */
@@ -257,102 +197,8 @@ class CTOCODE_Contentlist
 		}
 		return $ids;
 	}
-
-	/*
-	 * sql语句拼凑 *************************************************************
-	 */
-	private function doSqlParse($wsql = NULL)
-	{
-		$sql_select = " SELECT c.* ";
-		$sql_from = " FROM {$this->modelData['model_table']} AS c ";
-		/*
-		 * =============== =============== =============== ===============
-		 * =============== where 语句 ===============
-		 */
-		$sql_where = " WHERE 1=1 ";
-		// 栏目限制 可指定多个
-		// $cids = $this->getcids ( $this->cfg['cid'] );
-		// 栏目排除 可指定多个(优先 同一个栏目在 指定与排除中同时出现 则排除)
-		// $nocids = $this->getcids ( $this->cfg['nocid'] );
-		// 自定义限制
-		// 状态
-		$state = array_unique ( array_filter ( explode ( ',', $wsql['state'] ) ) );
-		if(count ( $state ) > 0){
-			if(count ( $state ) == 1){
-				$sql_where .= " AND c.state ='{$state[0]}' ";
-			}else{
-				// $sql_where .= ' AND c.state' . $this->getsql_warr ( $state );
-			}
-		}else{
-			$sql_where .= ' AND c.state>=0 ';
-			// 状态
-			// $nostate = array_unique ( array_filter ( explode ( ',', $wsql['nostate'] ) ) );
-			if(count ( $nostate ) > 0){
-				// $sql_where .= ' AND c.state' . $this->getsql_warr ( $nostate, true );
-			}
-		}
-		// 商户id限制
-		if(! empty ( $wsql['business_id'] )){
-			$sql_where .= ' AND c.business_id =' . $wsql['business_id'] . ' ';
-		}
-		// ID查找
-		if($wsql['id'] > 0){
-			$sql_where .= ' AND c.id =' . $wsql['id'] . ' ';
-		}
-		// 排除ID
-		if($wsql['noid'] > 0){
-			$sql_where .= ' AND c.id NOT IN(' . $wsql['noid'] . ') ';
-		}
-		if($wsql['cid'] != ''){
-			$sql_where .= ' AND c.cat_id IN(' . $wsql['cid'] . ' )';
-		}
-		// $this->doSpecialWsqlData ( $wsql );
-		if($wsql['cids']){
-			// $sql_where .= ' AND c.cid' . $this->getsql_warr ( $wsql['cids'] );
-		}
-		if($wsql['nocids']){
-			// $sql_where .= ' AND c.cid' . $this->getsql_warr ( $wsql['nocids'], true );
-		}
-		// 自定义限制
-		if($wsql['wsql'] != ''){
-			$sql_where .= ' AND ( ' . $wsql['wsql'] . ' )';
-		}
-		// 时间限制
-		$time = intval ( $wsql['time'] );
-		if($time > 0){
-			$mtime = $this->currtime - $time * 3600 * 24;
-			$sql_where .= " AND c.uptime>{$mtime} ";
-		}
-		/*
-		 * =============== =============== =============== ===============
-		 * =============== order by 语句 ,排序字段,排序方式 ===============
-		 */
-		$sql_order = '';
-		if(! empty ( $wsql['orderby'] ) && ! empty ( $wsql['ordersort'] )){
-			$sql_order .= " ORDER BY " . ($wsql['orderby'] == 'rand' ? ' RAND() ' : " {$wsql['orderby']} {$wsql['ordersort']} ");
-		}
-		/*
-		 * =============== =============== =============== ===============
-		 * =============== limit 语句 ,页条数Limit===============
-		 */
-		$sql_limit = '';
-		if($wsql['limit'] !== ''){
-			$limit_arr = explode ( ',', $wsql['limit'] );
-			$limit_begin = is_numeric ( $limit_arr[0] ) ? intval ( $limit_arr[0] ) : 0;
-			$limit_end = is_numeric ( $limit_arr[1] ) ? intval ( $limit_arr[1] ) : 0;
-			$sql_limit .= " LIMIT {$limit_begin},{$limit_end} ";
-		}else{ //
-			$row = $wsql['row'];
-			$offset = (max ( 1, $wsql['page'] ) - 1) * $row;
-			$sql_limit .= " LIMIT {$offset},{$row} ";
-		}
-		//
-		$sql_all = $sql_select . $sql_from . $sql_where . $sql_order . $sql_limit;
-		return $sql_all;
-	}
 	private function doSpecialModelData()
 	{
-
 		// 手工指定了模型 则剔除栏目设置中 不属于手工指定模型的单元
 		$models = array();
 		$model = $this->cfg['model_id'] != '' ? array_unique ( array_filter ( explode ( ',', $this->cfg['model_id'] ) ) ) : array();
