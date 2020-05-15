@@ -65,8 +65,12 @@ class CtoModel
 	}
 	protected function analysField($readData, $tableFields)
 	{
-		$anaObj = new CtoModelAnalys ();
-		return $anaObj->analysField ( $readData, $tableFields );
+		if($this->_autoAnalys){
+			$anaObj = new CtoModelAnalys ();
+			return $anaObj->analysField ( $readData, $tableFields );
+		}else{
+			return $readData;
+		}
 	}
 	protected function sqlRead($sql = '')
 	{
@@ -74,10 +78,7 @@ class CtoModel
 			return false;
 		}
 		$sql_result = ctoDbRead ( $sql );
-		if($this->_autoAnalys){
-			return $this->analysField ( $sql_result, $this->_tableFields );
-		}
-		return $sql_result;
+		return $this->analysField ( $sql_result, $this->_tableFields ?? []);
 	}
 	/**
 	 * @action 执行 更新或者插入

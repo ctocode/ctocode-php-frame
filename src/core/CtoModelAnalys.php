@@ -29,15 +29,17 @@ class CtoModelAnalys
 							$fkey_new = $fkey . '_rmb2';
 							$data[$dkey][$fkey_new] = analysMoneyDe ( $dval, $fkey );
 							break 1;
-						case 'img':
+						case 'pic_cdn':
 							$fkey_new = $fkey . '_cdn';
-							$data[$dkey][$fkey_new] = analysImgDoTrnas ( $dval );
+							$pic_def = $fval['pic_def'] ?? '';
+							$data[$dkey][$fkey_new] = analysImgDoTrnas ( $dval, $pic_def );
 							break 1;
 						default:
 							break 1;
 					}
 				}
 			}
+			ksort ( $data[$dkey] );
 		}
 		return $data;
 	}
