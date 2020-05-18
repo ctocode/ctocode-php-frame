@@ -39,6 +39,10 @@ trait CtoTraitModelCheck
 			return '';
 		}
 	}
+	protected function checkPicture($value = '', $default = '')
+	{
+		return $this->checkVarchar ( $value, $default );
+	}
 	/**
 	 * @action 【验证函数】--mysql【int】验证
 	 * @author ctocode-zhw

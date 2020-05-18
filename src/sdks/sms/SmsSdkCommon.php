@@ -33,7 +33,7 @@ class SmsSdkCommon
 	{
 		$field = array();
 		$field['sms_is_read'] = 1;
-		Db::table ( 'addons_ctosms_log' )->where ( 'sys_id', $sys_id )->update ( $field );
+		Db::table ( 'sdks_ctosms_log' )->where ( 'sys_id', $sys_id )->update ( $field );
 	}
 	// 记录短信记录
 	protected function addSmsLog($requestData, $mobile = '', $code = '')
@@ -47,7 +47,7 @@ class SmsSdkCommon
 		$field['business_id'] = $requestData['business_id'] ?? 0;
 		$field['sms_mobile'] = $mobile;
 		$field['sms_code'] = $code;
-		$sql_result = Db::table ( 'addons_ctosms_log' )->save ( $field );
+		$sql_result = Db::table ( 'sdks_ctosms_log' )->save ( $field );
 		if($sql_result === FALSE){
 			// TODO 写入错误日志
 		}
