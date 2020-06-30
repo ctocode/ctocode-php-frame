@@ -84,19 +84,6 @@ include_once __DIR__ . '/helper/security.php'; // 安全处理
 include_once __DIR__ . '/helper/str.php'; // 字符串
 include_once __DIR__ . '/helper/time.php'; // 时间
 
-
-/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: */
-// 是否添加360网站安全处理脚本文件，注意文件路径
-// if(is_file ( __DIR__ . '/360safe_webscan.php' ))
-	// {
-	// require (__DIR__ . '/360safe_webscan.php');
-	// }
-/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: */
-// if(! file_exists ( _CTOCODE_CONFIG_ . 'install.lock' ))
-	// { /* 未安装 */
-	// 	// header ( 'Location:install' );
-	// 	exit ( '未安装' );
-	// }
 /*
  * ============================================================================
  * ctocode之路，开始处理

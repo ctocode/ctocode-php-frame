@@ -87,7 +87,7 @@ class SmsSdkCommon
 		 * 验证短信黑名单
 		 */
 		//
-		$blackModel = loadRpcModelClass ( 'comtool', 'SmsBlack' );
+		$blackModel = loadRpcModelClass ( 'comsdks', 'SmsBlack' );
 		$blackData = $blackModel->getListData ( array(
 			'black_flag' => $mobile
 		) );

@@ -16,19 +16,23 @@ class CtoModelAnalys
 
 		foreach($data as $dkey=>$dval){
 			foreach($fieldSett as $fkey=>$fval){
-				if(isset ( $dval[$fkey] ) && ! empty ( $fval['type'] )){
+				if(! empty ( $fval['type'] )){
 					try{
 						switch($fval['type'])
 						{
 							// 解析时间
 							case 'date':
 							case 'time':
-								$fkey_new = str_replace ( "time", "date", $fkey );
-								$data[$dkey][$fkey_new] = analysTimeToDate ( $dval[$fkey], $fval['format'] ?? '');
+								if(isset ( $dval[$fkey] )){
+									$fkey_new = str_replace ( "time", "date", $fkey );
+									$data[$dkey][$fkey_new] = analysTimeToDate ( $dval[$fkey], $fval['format'] ?? '');
+								}
 								break 1;
 							case 'price':
-								$fkey_new = $fkey . '_rmb2';
-								$data[$dkey][$fkey_new] = analysMoneyDe ( $dval[$fkey], $fkey );
+								if(isset ( $dval[$fkey] )){
+									$fkey_new = $fkey . '_rmb2';
+									$data[$dkey][$fkey_new] = analysMoneyDe ( $dval, $fkey );
+								}
 								break 1;
 							case 'picture':
 								$fkey_new = $fkey . '_cdn';

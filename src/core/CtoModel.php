@@ -91,9 +91,9 @@ class CtoModel
 	protected function sqlWrite($tableName = '', $fieldData = '', $wsql = '', $in_or_up = false, $type = 'xxx')
 	{
 		if($type == 'R'){
-			$sql_result = ctoDbWrite ( $this->table, $fieldData, $wsql, $in_or_up );
+			$sql_result = ctoDbWrite ( $tableName, $fieldData, $wsql, $in_or_up );
 		}else{
-			$sql_result = ctoDbWrite ( $this->table, $fieldData, $wsql, $in_or_up );
+			$sql_result = ctoDbWrite ( $tableName, $fieldData, $wsql, $in_or_up );
 		}
 		return $sql_result;
 	}

@@ -21,7 +21,7 @@ class SmsSdkAlidayu extends SmsSdkCommon implements SmsSdkInterface
 			);
 		}
 		// 验证 有效期内已经发送过
-		$logModel = loadRpcModelClass ( 'comtool', 'SmsLog' );
+		$logModel = loadRpcModelClass ( 'comsdks', 'SmsLog' );
 		$logData = $logModel->getListData ( array(
 			'page' => 1,
 			'sms_mobile' => $mobile,

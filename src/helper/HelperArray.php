@@ -230,4 +230,12 @@ class HelperArray
 		}
 		return $narr;
 	}
+	public static function addToMerge($oldData = [], $addArr)
+	{
+		$newArr = [];
+		foreach($oldData as $val){
+			$newArr[] = array_merge ( $val, $addArr );
+		}
+		return $newArr;
+	}
 }

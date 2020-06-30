@@ -133,25 +133,6 @@ function ctoHttpCurl($url = '', $data = null, $header = null)
 }
 
 /**
- * @action 判断是否是https
- * @author ctocode-zwj
- * @version 2018-06-15
- */
-function ctoIsHttps()
-{
-	if(! isset ( $_SERVER['HTTPS'] ))
-		return FALSE;
-	if($_SERVER['HTTPS'] === 1){ // Apache
-		return TRUE;
-	}elseif($_SERVER['HTTPS'] === 'on'){ // IIS
-		return TRUE;
-	}elseif($_SERVER['SERVER_PORT'] == 443){ // 其他
-		return TRUE;
-	}
-	return FALSE;
-}
-
-/**
  * @action http转换为https  
  * @author ctocode-zwj
  * @version 2018-06-15
@@ -336,11 +317,34 @@ function ctoUrlBase()
 	}
 	return $base_url;
 }
+
+/**
+ * @action 判断是否是https
+ * @author ctocode-zwj
+ * @version 2018-06-15
+ */
+function ctoIsHttps()
+{
+	if(! isset ( $_SERVER['HTTPS'] ))
+		return FALSE;
+	if($_SERVER['HTTPS'] === 1){ // Apache
+		return TRUE;
+	}elseif($_SERVER['HTTPS'] === 'on'){ // IIS
+		return TRUE;
+	}elseif($_SERVER['SERVER_PORT'] == 443){ // 其他
+		return TRUE;
+	}
+	return FALSE;
+}
 function ctoUrlIsHttps()
 {
 	if(! empty ( $_SERVER['HTTPS'] ) && strtolower ( $_SERVER['HTTPS'] ) !== 'off'){
 		return true;
 	}elseif(isset ( $_SERVER['HTTP_X_FORWARDED_PROTO'] ) && strtolower ( $_SERVER['HTTP_X_FORWARDED_PROTO'] ) === 'https'){
+		/**
+		 * slb 处理 无法获取是否https
+		 * （注意：需要在 slb 高级配置里勾选“ 通过X-Forwarded-Proto头字段获取SLB的监听协议 ”）
+		 */
 		return true;
 	}elseif(! empty ( $_SERVER['HTTP_FRONT_END_HTTPS'] ) && strtolower ( $_SERVER['HTTP_FRONT_END_HTTPS'] ) !== 'off'){
 		return true;
