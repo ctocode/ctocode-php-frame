@@ -46,62 +46,6 @@ class CTOCODE_Contentlist
 	// 'extra' => '',
 	// 'debug' => 0 /* 开启debug模式,输出sql语句 */
 	);
-	public function getParseSql($sql_join = '')
-	{ // 处理查询字段数据
-		$setting = $this->parseSqlJoin ( $sql_join, null );
-
-		// $tableFiledData = CtoModel::getTableColumn ( $this->modelData['model_table'] );
-		// foreach($tableFiledData as $key=>$val)
-		// {
-		// if($setting[$val['field']] !== NULL)
-		// {
-		// echo $setting[$val['field']];
-		// }
-		// }
-		$cfg2 = array();
-		foreach($this->defaults as $k=>$v){
-			$cfg2[$k] = isset ( $setting[$k] ) ? $setting[$k] : $v;
-		}
-		// $this->currtime = time ();
-		// $this->cfg = $cfg2;
-		// CtoModel::getTableColumn 获取表单字段
-		return $cfg2;
-	}
-	// 用于 sql_join 默认解析
-	function parseSqlJoin($default = '', $atts = null)
-	{
-		$row = array();
-		if(! empty ( $default )){
-			$defaultAry = explode ( ';', $default );
-			foreach($defaultAry as $ary){
-				list($k,$v) = explode ( '|', $ary );
-				$row[$k] = $v;
-			}
-		}
-		if(! empty ( $atts ) && is_array ( $atts )){
-			foreach($atts as $m=>$att){
-				$row[$m] = $att;
-			}
-		}
-		return $row;
-	}
-	/*
-	 * 重置配置
-	 */
-	function setcfg($key = '', $val = '')
-	{
-		$settings = array();
-		if(is_array ( $key )){
-			$settings = $key;
-		}else{
-			$settings[$key] = $val;
-		}
-		foreach($settings as $k=>$v){
-			if(isset ( $this->cfg[$k] )){
-				$this->cfg[$k] = $v;
-			}
-		}
-	}
 	/*
 	 * 获取列表ids
 	 */

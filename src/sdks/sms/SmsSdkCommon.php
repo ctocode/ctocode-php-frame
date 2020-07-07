@@ -31,9 +31,9 @@ class SmsSdkCommon
 	// 修改短信记录
 	protected function changSmsLog($sys_id = 0)
 	{
-		$field = array();
-		$field['sms_is_read'] = 1;
-		Db::table ( 'sdks_ctosms_log' )->where ( 'sys_id', $sys_id )->update ( $field );
+		Db::table ( 'sdks_ctosms_log' )->where ( 'sys_id', $sys_id )->update ( [
+			'sms_is_read' => 1
+		] );
 	}
 	// 记录短信记录
 	protected function addSmsLog($requestData, $mobile = '', $code = '')
