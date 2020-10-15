@@ -3,24 +3,5 @@ use {%namespace%}\{%useClass%}Model;
 use {%namespace%}\{%useClass%}Select;
 class {%className%} extends CtocodeRpcService
 {
-	public static function getListData($wsql = null)
-	{
-		$modelSelect = new {%useClass%}Select ( $wsql );
-		return $modelSelect->getListData ( $wsql );
-	}
-	public static function getRowData($wsql = null)
-	{
-		$modelSelect = new {%useClass%}Select ( $wsql );
-		return $modelSelect->getListData ( $wsql, 'row' );
-	}
-	public static function update($request_data = null)
-	{
-		$modelHandle = new {%useClass%}Model ();
-		return $modelHandle->insertOrUpdate ( $request_data );
-	}
-	public static function delete($request_data = null)
-	{
-		$modelHandle = new {%useClass%}Model ();
-		return $modelHandle->delete ( $request_data );
-	}
+	 
 }

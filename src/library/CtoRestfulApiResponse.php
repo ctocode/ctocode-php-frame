@@ -15,35 +15,35 @@ class CtoRestfulApiResponse extends CtoRestfulApiBase
 	// json格式
 	protected function encodeJson($responseData = array())
 	{
-		return json_encode ( $responseData, true );
+		return json_encode($responseData, true);
 	}
 	// xml格式
 	protected function encodeXml($responseData = array())
 	{ // 创建 SimpleXMLElement 对象
 		/* '<?xml version="1.0"?><site></site>' */
-		$xml = new \SimpleXMLElement ( '<?xml version="1.0"?><rest></rest>' );
-		foreach($responseData as $key=>$value){
-			if(is_array ( $value )){
-				foreach($value as $k=>$v){
-					$xml->addChild ( $k, $v );
+		$xml = new \SimpleXMLElement('<?xml version="1.0"?><rest></rest>');
+		foreach ($responseData as $key => $value) {
+			if (is_array($value)) {
+				foreach ($value as $k => $v) {
+					$xml->addChild($k, $v);
 				}
-			}else{
-				$xml->addChild ( $key, $value );
+			} else {
+				$xml->addChild($key, $value);
 			}
 		}
-		return $xml->asXML ();
+		return $xml->asXML();
 	}
 	// html格式
 	protected function encodeHtml($responseData = array())
 	{
 		$html = "<table border='1'>";
-		foreach($responseData as $key=>$value){
+		foreach ($responseData as $key => $value) {
 			$html .= "<tr>";
-			if(is_array ( $value )){
-				foreach($value as $k=>$v){
+			if (is_array($value)) {
+				foreach ($value as $k => $v) {
 					$html .= "<td>" . $k . "</td><td>" . $v . "</td>";
 				}
-			}else{
+			} else {
 				$html .= "<td>" . $key . "</td><td>" . $value . "</td>";
 			}
 			$html .= "</tr>";

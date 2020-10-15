@@ -15,9 +15,9 @@ class {%className%} extends ModelExtend
 	// 数据库连接
 	protected $connection = '';
 	// 表名
-	protected $table = '';
+	protected $tableName = '';
 	// 主键
-	protected $pk = '';
+	protected $tablePrimary = '';
 	// 设置字段信息
 	protected $schema = array(
 		// 'id' => 'int',

@@ -15,40 +15,41 @@ class SmsSdkCommon
 	 */
 	public static function getInstance($AutoCreate = false)
 	{
-		if($AutoCreate === true && ! self::$_instance){
-			self::init ();
+		if ($AutoCreate === true && !self::$_instance) {
+			self::init();
 		}
-		if(self::$_instance == null){
-			self::init ();
+		if (self::$_instance == null) {
+			self::init();
 		}
 		return self::$_instance;
 	}
 	// 初始化当前实例
 	public static function init()
 	{
-		return self::$_instance = new self ();
+		return self::$_instance = new self();
 	}
 	// 修改短信记录
 	protected function changSmsLog($sys_id = 0)
 	{
-		Db::table ( 'sdks_ctosms_log' )->where ( 'sys_id', $sys_id )->update ( [
+		Db::table('sdks_ctosms_log')->where('sys_id', $sys_id)->update([
 			'sms_is_read' => 1
-		] );
+		]);
 	}
 	// 记录短信记录
-	protected function addSmsLog($requestData, $mobile = '', $code = '')
+	protected function addSmsLog($requestData, $mobile = '', $code = '', $sign = '')
 	{
 		$field = array();
 		$field['sms_type'] = $requestData['sms_send_type'];
 		$field['sms_supplier'] = 0;
 		$field['sms_from_ip'] = $requestData['log_ip'];
 		$field['sms_from_client'] = $requestData['log_source'];
-		$field['sms_sendtime'] = $requestData['log_time'] ?? time ();
+		$field['sms_sendtime'] = $requestData['log_time'] ?? time();
 		$field['business_id'] = $requestData['business_id'] ?? 0;
 		$field['sms_mobile'] = $mobile;
 		$field['sms_code'] = $code;
-		$sql_result = Db::table ( 'sdks_ctosms_log' )->save ( $field );
-		if($sql_result === FALSE){
+		$filed['smslog_sign'] = $sign;
+		$sql_result = Db::table('sdks_ctosms_log')->save($field);
+		if ($sql_result === FALSE) {
 			// TODO 写入错误日志
 		}
 	}
@@ -58,19 +59,19 @@ class SmsSdkCommon
 	 */
 	protected function isCheckMobile($mobile = '')
 	{
-		if(empty ( $mobile )){
+		if (empty($mobile)) {
 			return array(
 				'status' => 404,
 				'msg' => '手机不能为空',
 				'data' => ''
 			);
 		}
-		$mobile = trim ( $mobile );
+		$mobile = trim($mobile);
 		/**
 		 * 手机号过滤，是否需要解码
 		 */
 		// $mobile = $this->isDecodeMobile ( $mobile );
-		if(true !== ctoCheck ( 'mobile', $mobile )){
+		if (true !== ctoCheck('mobile', $mobile)) {
 			return array(
 				'status' => 404,
 				'msg' => '手机号码格式错误'
@@ -87,11 +88,11 @@ class SmsSdkCommon
 		 * 验证短信黑名单
 		 */
 		//
-		$blackModel = loadRpcModelClass ( 'comsdks', 'SmsBlack' );
-		$blackData = $blackModel->getListData ( array(
+		$blackModel = loadRpcModelClass('comsdks', 'SmsBlack');
+		$blackData = $blackModel->getListData(array(
 			'black_flag' => $mobile
-		) );
-		if($blackData['total'] > 0){
+		));
+		if ($blackData['total'] > 0) {
 			return array(
 				'status' => 404,
 				'msg' => '手机号black'
@@ -113,9 +114,9 @@ class SmsSdkCommon
 			'keyString' => 'ctocode20180505',
 			'ivString' => 'ctocode6666'
 		);
-		$aes = new \ctocode\library\CtoAes ( $aesSett );
+		$aes = new \ctocode\library\CtoAes($aesSett);
 		// base64_decode获取手机号
-		return $aes->decrypt ( $mobile, 'base64' );
+		return $aes->decrypt($mobile, 'base64');
 	}
 
 	/**
@@ -130,11 +131,11 @@ class SmsSdkCommon
 		 * - 是否在黑名单中
 		 * - 是否被禁用
 		 */
-		$ucenterBlack = loadRpcModelClass ( 'comucenter', 'Black' );
-		$isBlackCode = $ucenterBlack->getRowData ( [
+		$ucenterBlack = loadRpcModelClass('comucenter', 'Black');
+		$isBlackCode = $ucenterBlack->getRowData([
 			'ucenter_code' => $smsSendParam['log_code']
-		] )['data'];
-		if(! empty ( $isBlackCode )){
+		])['data'];
+		if (!empty($isBlackCode)) {
 			// 存在于黑名单
 			return array(
 				'status' => 405,
@@ -148,29 +149,28 @@ class SmsSdkCommon
 		 * - 短信风险识别，先获取短信风险值，然后与数据库的对比
 		 */
 		//
-		$cmsSettingRpcModelObj = loadRpcModelClass ( 'saasplat', 'PlatSetting' );
-		$safResult = $cmsSettingRpcModelObj->getRowData ( [
+		$cmsSettingRpcModelObj = loadRpcModelClass('v2_role', 'PlatSetting');
+		$safResult = $cmsSettingRpcModelObj->getRowData([
 			'setts_key' => 'saf_register_open'
-		] )['data'];
-		if(! empty ( $safResult[0]['setts_value'] ) && $safResult[0]['setts_value'] == 'true'){
-			$apiResultSmsData = ctoHttpCurl ( _URL_API_ . "saf/opt", array(
-				'TokenType' => _TOOL_TOKEN_TYPES_,
-				'saf_id' => \think\facade\Config::get ( 'ctocode._TOOL_SAF_SETT_ID_' ),
-				'ip' => ctoIpGet (),
+		])['data'];
+		if (!empty($safResult[0]['setts_value']) && $safResult[0]['setts_value'] == 'true') {
+			$apiResultSmsData = ctoHttpCurl("saf/opt", array(
+				'saf_id' => syOpenAppsConfig('_TOOL_SAF_SETT_ID_'),
+				'ip' => ctoIpGet(),
 				'log_code' => $smsSendParam['log_code'],
 				'log_type' => $smsSendParam['sms_send_type'],
 				'log_souce' => $smsSendParam['sms_send_source'],
 				'deviceType' => $smsSendParam['sms_device_type'],
 				'deviceToken' => $smsSendParam['sms_device_token'],
 				'mobile' => $smsSendParam['sms_send_mobile']
-			) );
-			$apiResultData = json_decode ( $apiResultSmsData, true );
+			));
+			$apiResultData = json_decode($apiResultSmsData, true);
 
-			$settingScore = $cmsSettingRpcModelObj->getRowData ( [
+			$settingScore = $cmsSettingRpcModelObj->getRowData([
 				'setts_key' => 'saf_register_score'
-			] )['data'];
+			])['data'];
 
-			if($apiResultData['data']['Score'] > $settingScore[0]['setts_value']){
+			if ($apiResultData['data']['Score'] > $settingScore[0]['setts_value']) {
 				return array(
 					'status' => 405,
 					'msg' => '该手机号存在风险，不予发送短信'

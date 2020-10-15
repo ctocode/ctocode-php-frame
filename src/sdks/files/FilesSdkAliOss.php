@@ -13,7 +13,7 @@ class FilesSdkAliOss extends FilesSdkCommon implements FilesSdkInterface
 	protected $ossClient = null;
 	protected $returnMsg = [];
 	protected $bucket = [];
-	public function __construct($ossConf)
+	public function __construct($ossConf = [])
 	{
 		$accessKeyId = $ossConf['sett_keyid'] ?? '';
 		$accessKeySecret = $ossConf['sett_keysecret'] ?? '';

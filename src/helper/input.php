@@ -36,26 +36,26 @@ function ctoRequestAll()
 function ctoRequestOnly($needArr = [])
 {
 	$requestData = [];
-	foreach($needArr as $key=>$val){
+	foreach ($needArr as $key => $val) {
 		$inputStr = '';
 		$inputDefault = '';
-		if(is_numeric ( $key )){
+		if (is_numeric($key)) {
 			$inputStr = $val;
-		}elseif(is_string ( $key )){
+		} elseif (is_string($key)) {
 			$inputStr = $key;
 			$inputDefault = $val;
 		}
-		if(empty ( $inputStr )){
+		if (empty($inputStr)) {
 			continue;
 		}
 		$inputName = $inputStr;
 		$inputType = 'string';
-		if(strpos ( $inputStr, "/" ) !== false){
-			$inputArr = explode ( "/", $inputStr );
+		if (strpos($inputStr, "/") !== false) {
+			$inputArr = explode("/", $inputStr);
 			$inputName = $inputArr[0]; // 接受字段
 			$inputType = $inputArr[1];
 		}
-		$requestData[$inputName] = ctoRequest ( $inputName, $inputType, $inputDefault );
+		$requestData[$inputName] = ctoRequest($inputName, $inputType, $inputDefault);
 	}
 	return $requestData;
 }
@@ -82,36 +82,35 @@ function ctoRequestOnly($needArr = [])
 function ctoRequest($name, $type = 'string', $default = '')
 {
 	$param = $_REQUEST;
-	if(isset ( $param[$name] ) && is_array ( $param[$name] )){
-		if(isset ( $param[$name] )){
+	if (isset($param[$name]) && is_array($param[$name])) {
+		if (isset($param[$name])) {
 			$return_val = $param[$name];
-		}else{
+		} else {
 			return null;
 		}
-	}else{
-		$return_val = isset ( $param[$name] ) ? $_REQUEST[$name] : '';
+	} else {
+		$return_val = isset($param[$name]) ? $_REQUEST[$name] : '';
 	}
 	// if(empty ( $return_val ) && ! isset ( $return_val )){
-	if(empty ( $return_val )){
-		$input = @file_get_contents ( 'php://input' );
-		$input = json_decode ( $input, 1 );
-		$return_val = isset ( $input[$name] ) ? $input[$name] : '';
+	if (empty($return_val)) {
+		$input = @file_get_contents('php://input');
+		$input = json_decode($input, 1);
+		$return_val = isset($input[$name]) ? $input[$name] : '';
 	}
-	if(! empty ( $type )){
-		$return_val = ctoValueCheck ( $return_val, $type, $default );
+	if (!empty($type)) {
+		$return_val = ctoValueCheck($return_val, $type, $default);
 	}
 	return $return_val;
 }
 // 基础 值 验证函数 2016-10-10
 function ctoValueCheck($value, $type = 'string', $default = null)
 {
-	switch($type)
-	{
+	switch ($type) {
 		case 'int':
-			$data = ! empty ( $default ) ? $default : 0;
-			$value = trim ( "{$value}" );
-			$return = is_numeric ( $value ) ? floatval ( $value ) : 0;
-			if(empty ( $return ) && ! empty ( $default )){
+			$data = !empty($default) ? $default : 0;
+			$value = trim("{$value}");
+			$return = is_numeric($value) ? intval($value) : 0;
+			if (empty($return) && !empty($default)) {
 				$return = $data;
 			}
 			break;
@@ -121,36 +120,36 @@ function ctoValueCheck($value, $type = 'string', $default = null)
 			break;
 		case 'string_chsDash':
 			// 只保留字母、数字、下划线、破折号、@
-			$data = ! empty ( $default ) ? $default : '';
-			$value = trim ( "{$value}" );
-			$return = ctoSecurityChsDash ( $value );
+			$data = !empty($default) ? $default : '';
+			$value = trim("{$value}");
+			$return = ctoSecurityChsDash($value);
 			break;
 		case 'string':
 			// addslashes 转义字符,默认开启
 			// removeXss 过滤xss攻击，默认开启
-			$data = ! empty ( $default ) ? $default : '';
-			$value = trim ( "{$value}" );
+			$data = !empty($default) ? $default : '';
+			$value = trim("{$value}");
 			// 过滤转义字符
-			$value = ctoSecurityAddslashes ( $value );
+			$value = ctoSecurityAddslashes($value);
 			// 过滤XSS
-			$value = ctoSecurityRemoveXss ( $value );
-			$return = ! empty ( $value ) ? $value : $data;
+			$value = ctoSecurityRemoveXss($value);
+			$return = !empty($value) ? $value : $data;
 			break;
 		case 'date':
-			$data = isset ( $default ) ? $default : time ();
-			$value = strtotime ( $value );
+			$data = isset($default) ? $default : time();
+			$value = strtotime($value);
 			$return = $value ? $value : $data;
 			break;
 		case 'float':
-			$return = is_float ( $value ) ? $value : 0;
+			$return = is_float($value) ? $value : 0;
 			break;
 		case 'double':
-			$return = is_double ( $value ) ? $value : 0;
+			$return = is_double($value) ? $value : 0;
 			break;
 		case 'arr':
 		case 'array':
 			$return = $value;
-			if(is_array ( $value )){
+			if (is_array($value)) {
 				// 如果是数组的话，要递归处理
 			}
 			break;
@@ -158,42 +157,24 @@ function ctoValueCheck($value, $type = 'string', $default = null)
 			$return = $value;
 			break;
 		default:
-			$return = ctoSecurityAddslashes ( $value );
+			$return = ctoSecurityAddslashes($value);
 			break;
 	}
 	return $return;
 }
-
-//
 function echoAjaxJsonData($arr = array())
 {
 	// TODO 目前强制为 json 返回
-	header ( 'Content-Type: application/json; charset=utf-8' );
-	echo json_encode ( $arr );
+	header('Content-Type: application/json; charset=utf-8');
+	echo json_encode($arr);
 	return;
-}
-function echoJsonSuccess($data = '', $msg = '操作成功~')
-{
-	return echoAjaxJsonData ( [
-		'status' => 200,
-		'data' => $data,
-		'msg' => $msg
-	] );
 }
 function echoJsonError($msg = '操作失败~', $status = 404)
 {
-	return echoAjaxJsonData ( [
+	return echoAjaxJsonData([
 		'status' => $status,
 		'msg' => $msg
-	] );
-}
-function echoHtmlError($html_str = '')
-{
-	$html = '';
-	$html .= "<h4> === 提示 === </h4>";
-	$html .= "<p>{$html_str}</p>";
-	echo $html;
-	exit ();
+	]);
 }
 // echo ctoValueAuthcode ( 'ucneter', 'ENCODE' );
 // echo ctoValueAuthcode ( '9d7dvoyZfZqITJseC9i9pWPxuWZkSQkfKLyAdxSJjsQHJUBh' );
@@ -220,46 +201,46 @@ function ctoValueAuthcode($string, $operation = 'DECODE', $key = '', $expiry = 3
 	// 取值越大，密文变动规律越大，密文变化 = 16 的 $ckey_length 次方
 	// 当此值为 0 时，则不产生随机密钥
 
-	$key = md5 ( $key ? $key : 'default_key' ); // 这里可以填写默认key值
-	$keya = md5 ( substr ( $key, 0, 16 ) );
-	$keyb = md5 ( substr ( $key, 16, 16 ) );
-	$keyc = $ckey_length ? ($operation == 'DECODE' ? substr ( $string, 0, $ckey_length ) : substr ( md5 ( microtime () ), - $ckey_length )) : '';
+	$key = md5($key ? $key : 'default_key'); // 这里可以填写默认key值
+	$keya = md5(substr($key, 0, 16));
+	$keyb = md5(substr($key, 16, 16));
+	$keyc = $ckey_length ? ($operation == 'DECODE' ? substr($string, 0, $ckey_length) : substr(md5(microtime()), -$ckey_length)) : '';
 
-	$cryptkey = $keya . md5 ( $keya . $keyc );
-	$key_length = strlen ( $cryptkey );
+	$cryptkey = $keya . md5($keya . $keyc);
+	$key_length = strlen($cryptkey);
 
-	$string = $operation == 'DECODE' ? base64_decode ( substr ( $string, $ckey_length ) ) : sprintf ( '%010d', $expiry ? $expiry + time () : 0 ) . substr ( md5 ( $string . $keyb ), 0, 16 ) . $string;
-	$string_length = strlen ( $string );
+	$string = $operation == 'DECODE' ? base64_decode(substr($string, $ckey_length)) : sprintf('%010d', $expiry ? $expiry + time() : 0) . substr(md5($string . $keyb), 0, 16) . $string;
+	$string_length = strlen($string);
 
 	$result = '';
-	$box = range ( 0, 255 );
+	$box = range(0, 255);
 
 	$rndkey = array();
-	for($i = 0;$i <= 255;$i ++){
-		$rndkey[$i] = ord ( $cryptkey[$i % $key_length] );
+	for ($i = 0; $i <= 255; $i++) {
+		$rndkey[$i] = ord($cryptkey[$i % $key_length]);
 	}
-	for($j = $i = 0;$i < 256;$i ++){
+	for ($j = $i = 0; $i < 256; $i++) {
 		$j = ($j + $box[$i] + $rndkey[$i]) % 256;
 		$tmp = $box[$i];
 		$box[$i] = $box[$j];
 		$box[$j] = $tmp;
 	}
-	for($a = $j = $i = 0;$i < $string_length;$i ++){
+	for ($a = $j = $i = 0; $i < $string_length; $i++) {
 		$a = ($a + 1) % 256;
 		$j = ($j + $box[$a]) % 256;
 		$tmp = $box[$a];
 		$box[$a] = $box[$j];
 		$box[$j] = $tmp;
-		$result .= chr ( ord ( $string[$i] ) ^ ($box[($box[$a] + $box[$j]) % 256]) );
+		$result .= chr(ord($string[$i]) ^ ($box[($box[$a] + $box[$j]) % 256]));
 	}
-	if($operation == 'DECODE'){
-		if((substr ( $result, 0, 10 ) == 0 || substr ( $result, 0, 10 ) - time () > 0) && substr ( $result, 10, 16 ) == substr ( md5 ( substr ( $result, 26 ) . $keyb ), 0, 16 )){
-			return substr ( $result, 26 );
-		}else{
+	if ($operation == 'DECODE') {
+		if ((substr($result, 0, 10) == 0 || substr($result, 0, 10) - time() > 0) && substr($result, 10, 16) == substr(md5(substr($result, 26) . $keyb), 0, 16)) {
+			return substr($result, 26);
+		} else {
 			return '';
 		}
-	}else{
-		return $keyc . str_replace ( '=', '', base64_encode ( $result ) );
+	} else {
+		return $keyc . str_replace('=', '', base64_encode($result));
 	}
 }
 /**
@@ -269,14 +250,14 @@ function ctoValueAuthcode($string, $operation = 'DECODE', $key = '', $expiry = 3
  */
 function ctoValueMoneyEn($money = null)
 {
-	if(empty ( $money )){
+	if (empty($money)) {
 		return 0;
 	}
-	if(is_numeric ( $money )){
+	if (is_numeric($money)) {
 		$int_money = ($money * 100);
 		// $int_money = intval ( $int_money );
-		$int_money = ( float ) ($int_money);
-	}else{
+		$int_money = (float) ($int_money);
+	} else {
 		$int_money = 0;
 	}
 	return $int_money;
@@ -288,13 +269,13 @@ function ctoValueMoneyEn($money = null)
  */
 function ctoValueMoneyDe($money = null)
 {
-	if(empty ( $money )){
+	if (empty($money)) {
 		return '0.00';
 	}
-	if(is_numeric ( $money )){
+	if (is_numeric($money)) {
 		$int_money = $money / 100;
-		$int_money = sprintf ( "%.2f", $int_money );
-	}else{
+		$int_money = sprintf("%.2f", $int_money);
+	} else {
 		$int_money = 0;
 	}
 	return $int_money;
@@ -309,22 +290,22 @@ function ctoValueMoneyDe($money = null)
  */
 function ctoValueNumEncode($int = 0, $type = 'ENCODE')
 {
-	if($type == 'ENCODE'){
-		$int = ( int ) $int;
-		if($int == 0){
+	if ($type == 'ENCODE') {
+		$int = (int) $int;
+		if ($int == 0) {
 			return 0;
 		}
-		$len = strlen ( $int );
+		$len = strlen($int);
 		$temp = (300000000 + $int - 19750806) * 2;
 		return $temp . $len;
-	}else{
-		$num = ( int ) substr ( $int, 0, strlen ( $int ) - 1 );
-		$len = ( int ) substr ( $int, - 1, 1 );
-		if($num == 0 || $len == 0){
+	} else {
+		$num = (int) substr($int, 0, strlen($int) - 1);
+		$len = (int) substr($int, -1, 1);
+		if ($num == 0 || $len == 0) {
 			return 0;
 		}
-		$new = ( int ) (($num / 2) + 19750806 - 300000000);
-		if(strlen ( $new ) == $len){
+		$new = (int) (($num / 2) + 19750806 - 300000000);
+		if (strlen($new) == $len) {
 			return $new;
 		}
 	}
@@ -332,5 +313,5 @@ function ctoValueNumEncode($int = 0, $type = 'ENCODE')
 }
 function ctoValueNumDecode($int = 0, $type = 'ENCODE')
 {
-	return ctoValueNumEncode ( $int, 'DECODE' );
+	return ctoValueNumEncode($int, 'DECODE');
 }

@@ -9,22 +9,22 @@ class CtoFramework
 		// echo __DIR__;//D:\WWW\xxx\framework\core
 		// echo getcwd () ;//D:\WWW\xxx
 		// 调用下面方法
-		self::init ();
-		self::autoload ();
-		self::router ();
+		self::init();
+		self::autoload();
+		self::router();
 	}
 	// 初始化方法
 	public static function init()
 	{
 		// 前后台的控制器和视图目录怎么定义？需要解析url携带的参数，如：p=admin&c=goods&a=add才可以确定前后台的路径
 		// isset：判断是否有值 ucfirst（）：首字母大写 p是平台
-		define ( "PLATFORM", isset ( $_REQUEST['p'] ) ? $_REQUEST['p'] : "home" );
+		define("PLATFORM", isset($_REQUEST['p']) ? $_REQUEST['p'] : "home");
 
-		define ( "CONTROLLER", isset ( $_REQUEST['c'] ) ? ucfirst ( $_REQUEST['c'] ) : "Index" );
-		define ( "ACTION", isset ( $_REQUEST['a'] ) ? $_REQUEST['a'] : "index" );
+		define("CONTROLLER", isset($_REQUEST['c']) ? ucfirst($_REQUEST['c']) : "Index");
+		define("ACTION", isset($_REQUEST['a']) ? $_REQUEST['a'] : "index");
 		// CUR表示当前的
-		define ( "CUR_CONTROLLER_PATH", CONTROLLER_PATH . PLATFORM . DS );
-		define ( "CUR_VIEW_PATH", VIEW_PATH . PLATFORM . DS );
+		define("CUR_CONTROLLER_PATH", CONTROLLER_PATH . PLATFORM . DS);
+		define("CUR_VIEW_PATH", VIEW_PATH . PLATFORM . DS);
 	}
 	// 路由方法
 	public static function router()
@@ -32,8 +32,8 @@ class CtoFramework
 		// 确定类名和方法名
 		$controller_name = CONTROLLER . "Controller"; // 如GoodsController
 		$action_name = ACTION . "action"; // 如addAction
-		                                  // 实例化控制器，然后调用相应的方法
-		$controller = new $controller_name ();
+		// 实例化控制器，然后调用相应的方法
+		$controller = new $controller_name();
 		$controller->$action_name;
 	}
 
@@ -47,21 +47,21 @@ class CtoFramework
 	public static function autoload()
 	{
 		// echo __CLASS__;//Framework
-		spl_autoload_regisiter ( array(
+		spl_autoload_regisiter(array(
 			__CLASS__,
 			"load"
-		) );
+		));
 	}
 	// 加载函数
 	public static function load($classname)
 	{
 		// 只负责加载application下面的控制器和模型类如GoodsController，AdminModel
 		// {}做等体解析
-		if(substr ( $classname, - 10 ) == 'Controller'){
+		if (substr($classname, -10) == 'Controller') {
 			require CUR_CONTROLLER_PATH . "{$classname}.class.php";
-		}elseif(ubstr ( $classname, - 5 ) == 'Model'){
+		} elseif (ubstr($classname, -5) == 'Model') {
 			require MODEL_PATH . "{$classname}.class.php";
-		}else{
+		} else {
 			// 其他情况
 		}
 	}

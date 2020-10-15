@@ -37,22 +37,22 @@ class CtoLogs
 	{
 		self::$logPath = $logPath;
 		self::$logFlag = $logFlag;
-		if(! is_dir ( $logPath ))
-			mkdir ( $logPath, 0777 );
+		if (!is_dir($logPath))
+			mkdir($logPath, 0777);
 	}
 	public function writeLog($logMsg)
 	{
-		if(! self::$ifWrite)
+		if (!self::$ifWrite)
 			return;
-		$logName = self::$logPath . self::$logFlag . date ( 'Ymd' ) . ".log";
-		if(file_exists ( $logName )){
-			file_put_contents ( $logName, sprintf ( "[%s]%s\r\n", date ( 'G:i:s' ), $logMsg ), FILE_APPEND );
-		}else{
+		$logName = self::$logPath . self::$logFlag . date('Ymd') . ".log";
+		if (file_exists($logName)) {
+			file_put_contents($logName, sprintf("[%s]%s\r\n", date('G:i:s'), $logMsg), FILE_APPEND);
+		} else {
 			// 如果不存在则创建
-			file_put_contents ( $logName, sprintf ( "[%s]%s\r\n", date ( 'G:i:s' ), date ( 'Y-m-d' ) ) );
-			if(! is_writeable ( $logName ))
-				chmod ( $logName, 0777 );
-			file_put_contents ( $logName, sprintf ( "[%s]%s\r\n", date ( 'G:i:s' ), $logMsg ), FILE_APPEND );
+			file_put_contents($logName, sprintf("[%s]%s\r\n", date('G:i:s'), date('Y-m-d')));
+			if (!is_writeable($logName))
+				chmod($logName, 0777);
+			file_put_contents($logName, sprintf("[%s]%s\r\n", date('G:i:s'), $logMsg), FILE_APPEND);
 		}
 	}
 	static $LOG_LEVEL_NAMES = array(
@@ -65,50 +65,50 @@ class CtoLogs
 	private $level = _CTOLOG_LEVEL_DEBUG_;
 	public static function getInstance($AutoCreate = false)
 	{
-		if($AutoCreate === true && ! self::$instance){
-			self::init ();
+		if ($AutoCreate === true && !self::$instance) {
+			self::init();
 		}
 		return self::$instance;
 	}
 	public static function init()
 	{
-		return self::$instance = new self ();
+		return self::$instance = new self();
 	}
 	function setLogLevel($lvl)
 	{
-		if($lvl >= count ( self::$LOG_LEVEL_NAMES ) || $lvl < 0){
-			throw new \Exception ( 'invalid log level:' . $lvl );
+		if ($lvl >= count(self::$LOG_LEVEL_NAMES) || $lvl < 0) {
+			throw new \Exception('invalid log level:' . $lvl);
 		}
 		$this->level = $lvl;
 	}
 	function _log($level, $message, $name)
 	{
-		if($level > $this->level){
+		if ($level > $this->level) {
 			return;
 		}
 		$log_file_path = LOG_ROOT . $name . '.log';
 		$log_level_name = self::$LOG_LEVEL_NAMES[$this->level];
-		$content = date ( 'Y-m-d H:i:s' ) . ' [' . $log_level_name . '] ' . $message . "\n";
-		@file_put_contents ( $log_file_path, $content, FILE_APPEND );
+		$content = date('Y-m-d H:i:s') . ' [' . $log_level_name . '] ' . $message . "\n";
+		@file_put_contents($log_file_path, $content, FILE_APPEND);
 	}
 	function debug($message, $name = 'system')
 	{
-		$this->_log ( _CTOLOG_LEVEL_DEBUG_, $message, $name );
+		$this->_log(_CTOLOG_LEVEL_DEBUG_, $message, $name);
 	}
 	function info($message, $name = 'system')
 	{
-		$this->_log ( _CTOLOG_LEVEL_INFO_, $message, $name );
+		$this->_log(_CTOLOG_LEVEL_INFO_, $message, $name);
 	}
 	function warn($message, $name = 'system')
 	{
-		$this->_log ( _CTOLOG_LEVEL_WARN_, $message, $name );
+		$this->_log(_CTOLOG_LEVEL_WARN_, $message, $name);
 	}
 	function error($message, $name = 'system')
 	{
-		$this->_log ( _CTOLOG_LEVEL_ERROR_, $message, $name );
+		$this->_log(_CTOLOG_LEVEL_ERROR_, $message, $name);
 	}
 	function fatal($message, $name = 'system')
 	{
-		$this->_log ( _CTOLOG_LEVEL_FATAL_, $message, $name );
+		$this->_log(_CTOLOG_LEVEL_FATAL_, $message, $name);
 	}
-} 
+}

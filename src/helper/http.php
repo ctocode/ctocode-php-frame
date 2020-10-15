@@ -22,7 +22,7 @@
  */
 function ctoHttpSendPost($url, $post_data)
 {
-	$postdata = http_build_query ( $post_data );
+	$postdata = http_build_query($post_data);
 	$options = array(
 		'http' => array(
 			'method' => 'POST',
@@ -32,8 +32,8 @@ function ctoHttpSendPost($url, $post_data)
 		)
 	); // 超时时间（单位:s）
 
-	$context = stream_context_create ( $options );
-	$result = file_get_contents ( $url, false, $context );
+	$context = stream_context_create($options);
+	$result = file_get_contents($url, false, $context);
 	return $result;
 
 	// $post_data = array(
@@ -49,15 +49,15 @@ function ctoHttpSendPost($url, $post_data)
  */
 function ctoHttpCurl($url = '', $data = null, $header = null)
 {
-	if(empty ( $url )){
+	if (empty($url)) {
 		return '';
 	}
 	// 初始化curl模块,启动一个CURL会话
-	$curl = curl_init ();
+	$curl = curl_init();
 	// 请求的url地址
-	curl_setopt ( $curl, CURLOPT_URL, $url );
+	curl_setopt($curl, CURLOPT_URL, $url);
 	// 是否开启 显示返回的header头信息区域内容
-	curl_setopt ( $curl, CURLOPT_HEADER, 0 );
+	curl_setopt($curl, CURLOPT_HEADER, 0);
 	// 设置传递的头部信息
 	$header_arr = array(
 		'Content-Type: application/json; charset=utf-8'
@@ -67,16 +67,16 @@ function ctoHttpCurl($url = '', $data = null, $header = null)
 	 * 是否对 认证证书来源的检查验证
 	 * 0或者false | 1或者true
 	 */
-	curl_setopt ( $curl, CURLOPT_SSL_VERIFYPEER, FALSE );
+	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
 	/*
 	 * 是否从 证书中检查SSL加密算法是否存在
 	 * 0或者false | 1或者true
 	 */
-	curl_setopt ( $curl, CURLOPT_SSL_VERIFYHOST, FALSE );
-	if(! empty ( $data )){ // post方式提交.
-		curl_setopt ( $curl, CURLOPT_POST, 1 );
+	curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+	if (!empty($data)) { // post方式提交.
+		curl_setopt($curl, CURLOPT_POST, 1);
 		// post提交的数据包 ,http_build_query 传递多维数组
-		curl_setopt ( $curl, CURLOPT_POSTFIELDS, http_build_query ( $data ) );
+		curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
 		// curl_setopt ( $curl, CURLOPT_CUSTOMREQUEST, "POST" );
 	}
 	/*
@@ -85,7 +85,7 @@ function ctoHttpCurl($url = '', $data = null, $header = null)
 	 * 0还是输出到屏幕上
 	 * 获取的信息以文件流的形式返回
 	 */
-	curl_setopt ( $curl, CURLOPT_RETURNTRANSFER, 1 );
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 	// 执行最大秒数
 	// curl_setopt ( $curl, CURLOPT_TIMEOUT, 15 );
 	// 设置超时限制防止死循环
@@ -107,13 +107,13 @@ function ctoHttpCurl($url = '', $data = null, $header = null)
 	// curl_setopt($curl, CURLOPT_USERPWD, US_NAME.":".US_PWD);
 
 	// 执行cURL
-	$output = curl_exec ( $curl );
-	$is_errno = curl_errno ( $curl );
-	if($is_errno){ // 捕抓异常
+	$output = curl_exec($curl);
+	$is_errno = curl_errno($curl);
+	if ($is_errno) { // 捕抓异常
 		return 'Errno' . $is_errno;
 	}
 	// 关闭CURL资源会话，并且释放系统资源
-	curl_close ( $curl );
+	curl_close($curl);
 	// 返回数据
 	return $output;
 
@@ -122,10 +122,7 @@ function ctoHttpCurl($url = '', $data = null, $header = null)
 
 	// $curl_url = 'http://api.cto.com/';
 	// $curl_post_data = array(
-	// 'type' => $xxx_id,
-	// 'staff_id' => $user_id,
-	// 'staff_avatar' => $staff_avatar,
-	// 'prevurl' => $_SERVER['HTTP_REFERER'],
+	// 'type' => $xxx_id,   
 	// 'token' => 'xsasadqwas123'
 	// );
 	// $result_json = ctoHttpCurl ( $curl_url, $curl_post_data );
@@ -139,9 +136,9 @@ function ctoHttpCurl($url = '', $data = null, $header = null)
  */
 function ctoHttpTrans($value = '')
 {
-	if(ctoIsHttps () && preg_match ( '/(http:\/\/)/i', $value )){
-		return str_replace ( "http://", "https://", $value );
-	}else{
+	if (ctoUrlIsHttps() && preg_match('/(http:\/\/)/i', $value)) {
+		return str_replace("http://", "https://", $value);
+	} else {
 		return $value;
 	}
 }
@@ -153,47 +150,47 @@ function ctoHttpTrans($value = '')
  */
 function ctoHttpCurlAsync($nodes = '', $data = null, $json = false)
 {
-	// $nodes = array('http://hrhg.10.com/index/index1', 'http://hrhg.10.com/index/index2');
-	$node_count = count ( $nodes );
+	// $nodes = array('http://xx1.com/index/index1', 'http://xx2.com/index/index2');
+	$node_count = count($nodes);
 
 	$curl_arr = array();
-	$master = curl_multi_init (); // 1 创建批处理cURL句柄
+	$master = curl_multi_init(); // 1 创建批处理cURL句柄
 
-	for($i = 0;$i < $node_count;$i ++){
+	for ($i = 0; $i < $node_count; $i++) {
 		$url = $nodes[$i];
-		$curl_arr[$i] = curl_init ( $url );
-		if(! empty ( $data )){ // post方式提交.
-			curl_setopt ( $curl_arr[$i], CURLOPT_POST, 1 );
+		$curl_arr[$i] = curl_init($url);
+		if (!empty($data)) { // post方式提交.
+			curl_setopt($curl_arr[$i], CURLOPT_POST, 1);
 			// post提交的数据包 ,http_build_query 传递多维数组
-			if($json == true){
+			if ($json == true) {
 				$header_arr = array(
 					'Content-Type: application/json; charset=utf-8'
 				);
-				curl_setopt ( $curl_arr[$i], CURLOPT_HTTPHEADER, $header_arr );
-				curl_setopt ( $curl_arr[$i], CURLOPT_POSTFIELDS, $data ); // $data数据需要json_encode传过来
-			}else{
-				curl_setopt ( $curl_arr[$i], CURLOPT_POSTFIELDS, http_build_query ( $data ) );
+				curl_setopt($curl_arr[$i], CURLOPT_HTTPHEADER, $header_arr);
+				curl_setopt($curl_arr[$i], CURLOPT_POSTFIELDS, $data); // $data数据需要json_encode传过来
+			} else {
+				curl_setopt($curl_arr[$i], CURLOPT_POSTFIELDS, http_build_query($data));
 			}
 		}
 		/*
 		 * 是否对 认证证书来源的检查验证
 		 * 0或者false | 1或者true
 		 */
-		curl_setopt ( $curl_arr[$i], CURLOPT_SSL_VERIFYPEER, FALSE );
+		curl_setopt($curl_arr[$i], CURLOPT_SSL_VERIFYPEER, FALSE);
 		/*
 		 * 是否从 证书中检查SSL加密算法是否存在
 		 * 0或者false | 1或者true
 		 */
-		curl_setopt ( $curl_arr[$i], CURLOPT_SSL_VERIFYHOST, FALSE );
-		curl_setopt ( $curl_arr[$i], CURLOPT_RETURNTRANSFER, 1 ); // return don't print
-		curl_setopt ( $curl_arr[$i], CURLOPT_CONNECTTIMEOUT, 1 ); // 建立连接等待时间
-		                                                          // curl_setopt($curl_arr[$i], CURLOPT_TIMEOUT_MS, 10);//响应超时时间
+		curl_setopt($curl_arr[$i], CURLOPT_SSL_VERIFYHOST, FALSE);
+		curl_setopt($curl_arr[$i], CURLOPT_RETURNTRANSFER, 1); // return don't print
+		curl_setopt($curl_arr[$i], CURLOPT_CONNECTTIMEOUT, 1); // 建立连接等待时间
+		// curl_setopt($curl_arr[$i], CURLOPT_TIMEOUT_MS, 10);//响应超时时间
 
-		curl_multi_add_handle ( $master, $curl_arr[$i] ); // 2 增加句柄
+		curl_multi_add_handle($master, $curl_arr[$i]); // 2 增加句柄
 	}
-	do{
-		curl_multi_exec ( $master, $running ); // 3 执行批处理句柄
-	}while($running > 0); // 4
+	do {
+		curl_multi_exec($master, $running); // 3 执行批处理句柄
+	} while ($running > 0); // 4
 
 	// echo "results: ";
 	/*
@@ -205,7 +202,7 @@ function ctoHttpCurlAsync($nodes = '', $data = null, $json = false)
 	 * //echo( $i . "\n" . $results . "\n");
 	 * }
 	 */
-	curl_multi_close ( $master );
+	curl_multi_close($master);
 	// return $data;
 }
 
@@ -217,14 +214,14 @@ function ctoHttpCurlAsync($nodes = '', $data = null, $json = false)
  */
 function ctoHttpCurl_file_get_contents($durl)
 {
-	$ch = curl_init ();
-	curl_setopt ( $ch, CURLOPT_URL, $durl );
-	curl_setopt ( $ch, CURLOPT_TIMEOUT, 2 );
-	curl_setopt ( $ch, CURLOPT_USERAGENT, 10018 );
-	curl_setopt ( $ch, CURLOPT_REFERER, 10016 );
-	curl_setopt ( $ch, CURLOPT_RETURNTRANSFER, 1 );
-	$r = curl_exec ( $ch );
-	curl_close ( $ch );
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $durl);
+	curl_setopt($ch, CURLOPT_TIMEOUT, 2);
+	curl_setopt($ch, CURLOPT_USERAGENT, 10018);
+	curl_setopt($ch, CURLOPT_REFERER, 10016);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	$r = curl_exec($ch);
+	curl_close($ch);
 	return $r;
 }
 
@@ -238,8 +235,7 @@ function ctoUrlRedirect($uri = '', $type = 'location', $http_response_code = 302
 	// if ( ! preg_match ( '#^https?://#i', $uri )) {
 	// $uri = site_url ( $uri );
 	// }
-	switch($type)
-	{
+	switch ($type) {
 		case 'html':
 			echo '<meta http-equiv="refresh" content="5; url=index.com">该页面不允许单独访问,5秒后跳转<br>';
 			break;
@@ -247,40 +243,40 @@ function ctoUrlRedirect($uri = '', $type = 'location', $http_response_code = 302
 			echo "<script>" . "function redirect() {window.location.replace('$uri');}\n" . "setTimeout('redirect();', 0);\n" . "</script>";
 			break;
 		case 'refresh':
-			header ( "Refresh:0;url=" . $uri );
+			header("Refresh:0;url=" . $uri);
 			break;
 		case '301':
-			header ( 'HTTP/1.1 301 Moved Permanently' );
-			header ( 'Location: ' . $uri );
+			header('HTTP/1.1 301 Moved Permanently');
+			header('Location: ' . $uri);
 			break;
 		case '404':
-			@header ( 'http/1.1 404 not found' );
-			@header ( 'status: 404 not found' );
+			@header('http/1.1 404 not found');
+			@header('status: 404 not found');
 			break;
 		case 'location':
 			$replace = true;
 			$http_response_code = 0;
-			$string = str_replace ( array(
+			$string = str_replace(array(
 				"\r",
 				"\n"
 			), array(
 				'',
 				''
-			), $uri );
-			if(empty ( $http_response_code ) || PHP_VERSION < '4.3'){
-				@header ( $string, $replace );
-			}else{
-				@header ( $string, $replace, $http_response_code );
+			), $uri);
+			if (empty($http_response_code) || PHP_VERSION < '4.3') {
+				@header($string, $replace);
+			} else {
+				@header($string, $replace, $http_response_code);
 			}
-			if(preg_match ( '/^\s*location:/is', $string )){
-				exit ();
+			if (preg_match('/^\s*location:/is', $string)) {
+				exit();
 			}
 			break;
 		default:
-			header ( "Location: " . $uri, TRUE, $http_response_code );
+			header("Location: " . $uri, TRUE, $http_response_code);
 			break;
 	}
-	exit ();
+	exit();
 }
 function ctoUrlBase()
 {
@@ -309,10 +305,10 @@ function ctoUrlBase()
 
 	// $server_protocol = isset ( $_SERVER['SERVER_PROTOCOL'] ) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1';
 	// echo "<br>" . $server_protocol . "<br>";
-	if(isset ( $_SERVER['HTTP_HOST'] ) && preg_match ( '/^((\[[0-9a-f:]+\])|(\d{1,3}(\.\d{1,3}){3})|[a-z0-9\-\.]+)(:\d+)?$/i', $_SERVER['HTTP_HOST'] )){
-		$base_url = (ctoUrlIsHttps () ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . substr ( $_SERVER['SCRIPT_NAME'], 0, strpos ( $_SERVER['SCRIPT_NAME'], basename ( $_SERVER['SCRIPT_FILENAME'] ) ) );
-		$base_url2 = substr ( $_SERVER['SCRIPT_NAME'], 0, strpos ( $_SERVER['SCRIPT_NAME'], basename ( $_SERVER['SCRIPT_FILENAME'] ) ) );
-	}else{
+	if (isset($_SERVER['HTTP_HOST']) && preg_match('/^((\[[0-9a-f:]+\])|(\d{1,3}(\.\d{1,3}){3})|[a-z0-9\-\.]+)(:\d+)?$/i', $_SERVER['HTTP_HOST'])) {
+		$base_url = (ctoUrlIsHttps() ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . substr($_SERVER['SCRIPT_NAME'], 0, strpos($_SERVER['SCRIPT_NAME'], basename($_SERVER['SCRIPT_FILENAME'])));
+		$base_url2 = substr($_SERVER['SCRIPT_NAME'], 0, strpos($_SERVER['SCRIPT_NAME'], basename($_SERVER['SCRIPT_FILENAME'])));
+	} else {
 		$base_url = 'http://localhost/';
 	}
 	return $base_url;
@@ -320,36 +316,34 @@ function ctoUrlBase()
 
 /**
  * @action 判断是否是https
- * @author ctocode-zwj
+ * @author ctocode-zhw
  * @version 2018-06-15
  */
-function ctoIsHttps()
-{
-	if(! isset ( $_SERVER['HTTPS'] ))
-		return FALSE;
-	if($_SERVER['HTTPS'] === 1){ // Apache
-		return TRUE;
-	}elseif($_SERVER['HTTPS'] === 'on'){ // IIS
-		return TRUE;
-	}elseif($_SERVER['SERVER_PORT'] == 443){ // 其他
-		return TRUE;
-	}
-	return FALSE;
-}
 function ctoUrlIsHttps()
 {
-	if(! empty ( $_SERVER['HTTPS'] ) && strtolower ( $_SERVER['HTTPS'] ) !== 'off'){
+	if (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') {
 		return true;
-	}elseif(isset ( $_SERVER['HTTP_X_FORWARDED_PROTO'] ) && strtolower ( $_SERVER['HTTP_X_FORWARDED_PROTO'] ) === 'https'){
+	} elseif (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https') {
 		/**
 		 * slb 处理 无法获取是否https
 		 * （注意：需要在 slb 高级配置里勾选“ 通过X-Forwarded-Proto头字段获取SLB的监听协议 ”）
 		 */
 		return true;
-	}elseif(! empty ( $_SERVER['HTTP_FRONT_END_HTTPS'] ) && strtolower ( $_SERVER['HTTP_FRONT_END_HTTPS'] ) !== 'off'){
+	} elseif (!empty($_SERVER['HTTP_FRONT_END_HTTPS']) && strtolower($_SERVER['HTTP_FRONT_END_HTTPS']) !== 'off') {
 		return true;
 	}
 	return false;
+
+	if (!isset($_SERVER['HTTPS']))
+		return FALSE;
+	if ($_SERVER['HTTPS'] === 1) { // Apache
+		return TRUE;
+	} elseif ($_SERVER['HTTPS'] === 'on') { // IIS
+		return TRUE;
+	} elseif ($_SERVER['SERVER_PORT'] == 443) { // 其他
+		return TRUE;
+	}
+	return FALSE;
 }
 /**
  * 获取域名，验证域名
@@ -360,13 +354,13 @@ function ctoUrlIsHttps()
  */
 function ctoUrlDomainSecond($domain_host = '', $second_name = '')
 {
-	$http_host = ! empty ( $domain_host ) ? $domain_host : $_SERVER['HTTP_HOST'];
+	$http_host = !empty($domain_host) ? $domain_host : $_SERVER['HTTP_HOST'];
 	$matches = [];
-	preg_match ( '/(.*\.)?\w+\.\w+$/', $http_host, $matches );
+	preg_match('/(.*\.)?\w+\.\w+$/', $http_host, $matches);
 	$match = [];
-	preg_match ( "#(.*?)\.#i", $http_host, $match );
+	preg_match("#(.*?)\.#i", $http_host, $match);
 	return array(
 		'domain' => $matches[0],
-		'erji' => ! empty ( $match[1] ) ? $match[1] : ''
+		'erji' => !empty($match[1]) ? $match[1] : ''
 	);
 }

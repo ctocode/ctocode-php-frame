@@ -23,8 +23,8 @@
 function ctoSecurityChsDash($chars, $encoding = 'utf8')
 {
 	$pattern = ($encoding == 'utf8') ? '/[\x{4e00}-\x{9fa5}a-zA-Z0-9\@\_\-]/u' : '/[\x80-\xFF]/';
-	preg_match_all ( $pattern, $chars, $result );
-	$temp = join ( '', $result[0] );
+	preg_match_all($pattern, $chars, $result);
+	$temp = join('', $result[0]);
 	return $temp;
 }
 
@@ -35,15 +35,15 @@ function ctoSecurityChsDash($chars, $encoding = 'utf8')
  */
 function ctoSecurityAddslashes($value)
 {
-	if(is_string ( $value )){
-		return addslashes ( $value );
+	if (is_string($value)) {
+		return addslashes($value);
 	}
-	if(is_array ( $value )){
-		foreach($value as $k=>$v){
-			if(is_string ( $v )){
-				$value[$k] = ctoSecurityAddslashes ( $v );
-			}else if(is_array ( $v )){ // 再加判断,如果是数组,调用自身,再转
-				$value[$k] = ctoSecurityAddslashes ( $v );
+	if (is_array($value)) {
+		foreach ($value as $k => $v) {
+			if (is_string($v)) {
+				$value[$k] = ctoSecurityAddslashes($v);
+			} else if (is_array($v)) { // 再加判断,如果是数组,调用自身,再转
+				$value[$k] = ctoSecurityAddslashes($v);
 			}
 		}
 	}
@@ -56,15 +56,15 @@ function ctoSecurityAddslashes($value)
  */
 function ctoSecurityRemoveXss($value)
 {
-	if(is_string ( $value )){
-		return ctoSecurityDelXSS ( $value );
+	if (is_string($value)) {
+		return ctoSecurityDelXSS($value);
 	}
-	if(is_array ( $value )){
-		foreach($value as $k=>$v){
-			if(is_string ( $v )){
-				$value[$k] = ctoSecurityRemoveXss ( $v );
-			}else if(is_array ( $v )){ // 再加判断,如果是数组,调用自身,再转
-				$value[$k] = ctoSecurityRemoveXss ( $v );
+	if (is_array($value)) {
+		foreach ($value as $k => $v) {
+			if (is_string($v)) {
+				$value[$k] = ctoSecurityRemoveXss($v);
+			} else if (is_array($v)) { // 再加判断,如果是数组,调用自身,再转
+				$value[$k] = ctoSecurityRemoveXss($v);
 			}
 		}
 	}
@@ -81,15 +81,15 @@ function ctoSecurityRemoveXss($value)
 function ctoSecurityDelXSS($val)
 {
 	// $val = preg_replace ( '/([\x00-\x08,\x0b-\x0c,\x0e-\x19])/', '', $val );
-	$val = preg_replace ( '/([\x00-\x08\x0b-\x0c\x0e-\x19])/', '', $val );
+	$val = preg_replace('/([\x00-\x08\x0b-\x0c\x0e-\x19])/', '', $val);
 	$search = 'abcdefghijklmnopqrstuvwxyz';
 	$search .= 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 	$search .= '1234567890!@#$%^&*()';
 	$search .= '~`";:?+/={}[]-_|\'\\';
-	for($i = 0;$i < strlen ( $search );$i ++){
-		$val = preg_replace ( '/(&#[xX]0{0,8}' . dechex ( ord ( $search[$i] ) ) . ';?)/i', $search[$i], $val );
+	for ($i = 0; $i < strlen($search); $i++) {
+		$val = preg_replace('/(&#[xX]0{0,8}' . dechex(ord($search[$i])) . ';?)/i', $search[$i], $val);
 		// with a ;
-		$val = preg_replace ( '/(&#0{0,8}' . ord ( $search[$i] ) . ';?)/', $search[$i], $val );
+		$val = preg_replace('/(&#0{0,8}' . ord($search[$i]) . ';?)/', $search[$i], $val);
 	}
 	$ra1 = array(
 		'javascript',
@@ -128,17 +128,17 @@ function ctoSecurityDelXSS($val)
 		'onreadystatechange__onreset__onresize__onresizeend__onresizestart__onrowenter__onrowexit__onrowsdelete__onrowsinserted',
 		'onscroll__onselect__onselectionchange__onselectstart__onstart__onstop__onsubmit__onunload'
 	);
-	$ra2_str_arr = implode ( "__", $ra2_str_arr );
-	$ra2 = explode ( "__", $ra2_str_arr );
-	$ra = array_merge ( $ra1, $ra2 );
+	$ra2_str_arr = implode("__", $ra2_str_arr);
+	$ra2 = explode("__", $ra2_str_arr);
+	$ra = array_merge($ra1, $ra2);
 
 	$found = true;
-	while($found == true){
+	while ($found == true) {
 		$val_before = $val;
-		for($i = 0;$i < sizeof ( $ra );$i ++){
+		for ($i = 0; $i < sizeof($ra); $i++) {
 			$pattern = '/';
-			for($j = 0;$j < strlen ( $ra[$i] );$j ++){
-				if($j > 0){
+			for ($j = 0; $j < strlen($ra[$i]); $j++) {
+				if ($j > 0) {
 					$pattern .= '(';
 					$pattern .= '(&#[xX]0{0,8}([9ab]);)';
 					$pattern .= '|';
@@ -149,31 +149,14 @@ function ctoSecurityDelXSS($val)
 			}
 			$pattern .= '/i';
 			// $replacement = substr ( $ra[$i], 0, 2 ) . '<x>' . substr ( $ra[$i], 2 );
-			$replacement = substr ( $ra[$i], 0, 2 ) . ' ' . substr ( $ra[$i], 2 );
-			$val = preg_replace ( $pattern, $replacement, $val );
-			if($val_before == $val){
+			$replacement = substr($ra[$i], 0, 2) . ' ' . substr($ra[$i], 2);
+			$val = preg_replace($pattern, $replacement, $val);
+			if ($val_before == $val) {
 				$found = false;
 			}
 		}
 	}
 	return $val;
-}
-/**
- * 安全过滤函数 php防sqsl注入和通用过滤.
- * @author ctocode-zwj
- * @param $string
- * @return string
- */
-function ctoSafeFilterSql($val)
-{
-	if(get_magic_quotes_gpc ()){
-		$val = stripslashes ( $val );
-	}
-	if(version_compare ( phpversion (), "4.3.0" ) == "-1"){
-		return mysqli_escape_string ( $val );
-	}else{
-		return mysqli_real_escape_string ( $val );
-	}
 }
 /*
  * 功能：用来过滤字符串和字符串数组，防止被挂马和sql注入
@@ -182,51 +165,51 @@ function ctoSafeFilterSql($val)
  */
 function ctoSecurityIn($data, $force = false)
 {
-	if(is_string ( $data )){
-		$data = trim ( htmlspecialchars ( $data ) ); // 防止被挂马，跨站攻击
-		if(($force == true) || (! get_magic_quotes_gpc ())){
-			$data = addslashes ( $data ); // 防止sql注入
+	if (is_string($data)) {
+		$data = trim(htmlspecialchars($data)); // 防止被挂马，跨站攻击
+		if (($force == true) || (!get_magic_quotes_gpc())) {
+			$data = addslashes($data); // 防止sql注入
 		}
 		return $data;
-	}else if(is_array ( $data )){
-		foreach($data as $key=>$value){
-			$data[$key] = ctoSecurityIn ( $value, $force );
+	} else if (is_array($data)) {
+		foreach ($data as $key => $value) {
+			$data[$key] = ctoSecurityIn($value, $force);
 		}
 		return $data;
-	}else{
+	} else {
 		return $data;
 	}
 }
 // 用来还原字符串和字符串数组，把已经转义的字符还原回来
 function ctoSecurityOut($data)
 {
-	if(is_string ( $data )){
-		return $data = stripslashes ( $data );
-	}else if(is_array ( $data )){
-		foreach($data as $key=>$value){
-			$data[$key] = ctoSecurityOut ( $value );
+	if (is_string($data)) {
+		return $data = stripslashes($data);
+	} else if (is_array($data)) {
+		foreach ($data as $key => $value) {
+			$data[$key] = ctoSecurityOut($value);
 		}
 		return $data;
-	}else{
+	} else {
 		return $data;
 	}
 }
 // 表单令牌加密
 function input_hashcode($s = 0)
 {
-	$code = authcode ( 'CTOCODE/POST/CODE', 'ENCODE', 'YouDianYiSi', 3600 );
+	$code = authcode('CTOCODE/POST/CODE', 'ENCODE', 'YouDianYiSi', 3600);
 	return $s == 1 ? $code : '<input type="hidden" name="SyScode" id="SyScode" value="' . $code . '"/>';
 }
 function check_hashcode($s = '')
 {
-	if(trim ( $s ) != ''){
-		return authcode ( $s, 'DECODE', 'YouDianYiSi' ) == 'CTOCODE/POST/CODE' ? true : false;
+	if (trim($s) != '') {
+		return authcode($s, 'DECODE', 'YouDianYiSi') == 'CTOCODE/POST/CODE' ? true : false;
 	}
-	$v = isset ( $_POST['SyScode'] ) ? $_POST['SyScode'] : '';
-	if($v == '' || ! locationpost ()){
+	$v = isset($_POST['SyScode']) ? $_POST['SyScode'] : '';
+	if ($v == '' || !locationpost()) {
 		return false;
 	}
-	return authcode ( $v, 'DECODE', 'YouDianYiSi' ) == 'BAIYU/POST/CODE' ? true : false;
+	return authcode($v, 'DECODE', 'YouDianYiSi') == 'BAIYU/POST/CODE' ? true : false;
 }
 
 /**
@@ -237,12 +220,12 @@ function check_hashcode($s = '')
  */
 function deldanger($str = '')
 {
-	if(trim ( $str ) == '')
+	if (trim($str) == '')
 		return '';
-	$str = stripslashes ( $str );
-	$str = DelXSS ( $str );
-	$str = preg_replace ( "/[\r\n\t ]{1,}/", ' ', $str );
-	$str = preg_replace ( "/script/i", 'ｓｃｒｉｐｔ', $str );
-	$str = preg_replace ( "/<[/]{0,1}(link|meta|ifr|fra)[^>]*>/i", '', $str );
-	return addslashes ( $str );
+	$str = stripslashes($str);
+	$str = DelXSS($str);
+	$str = preg_replace("/[\r\n\t ]{1,}/", ' ', $str);
+	$str = preg_replace("/script/i", 'ｓｃｒｉｐｔ', $str);
+	$str = preg_replace("/<[/]{0,1}(link|meta|ifr|fra)[^>]*>/i", '', $str);
+	return addslashes($str);
 }

@@ -11,9 +11,9 @@ class SmsSdkAlidayu extends SmsSdkCommon implements SmsSdkInterface
 {
 	public static function sdkSmsCheck($smsParam = [], $sdkOpt = [], $mobile = '', $code = '')
 	{
-		$code = trim ( $code );
+		$code = trim($code);
 		// 验证短信配置
-		if(empty ( $code )){
+		if (empty($code)) {
 			return array(
 				'status' => 404,
 				'error' => 'Not Found',
@@ -21,17 +21,17 @@ class SmsSdkAlidayu extends SmsSdkCommon implements SmsSdkInterface
 			);
 		}
 		// 验证 有效期内已经发送过
-		$logModel = loadRpcModelClass ( 'comsdks', 'SmsLog' );
-		$logData = $logModel->getListData ( array(
+		$logModel = loadRpcModelClass('comsdks', 'SmsLog');
+		$logData = $logModel->getListData(array(
 			'page' => 1,
 			'sms_mobile' => $mobile,
 			'sms_code' => $code
-		) );
-		if(! empty ( $logData['data'][0] )){
+		));
+		if (!empty($logData['data'][0])) {
 			$logRows = $logData['data'][0];
-			$timeDiff = time () - $logRows['sms_sendtime'];
-			if($timeDiff < ($sdkOpt['sms_minute'] * 60)){
-				self::getInstance ()->changSmsLog ( $logRows['sys_id'] );
+			$timeDiff = time() - $logRows['sms_sendtime'];
+			if ($timeDiff < ($sdkOpt['sms_minute'] * 60)) {
+				self::getInstance()->changSmsLog($logRows['sys_id']);
 				return array(
 					'status' => 200,
 					'error' => 'Not Found',
@@ -49,8 +49,8 @@ class SmsSdkAlidayu extends SmsSdkCommon implements SmsSdkInterface
 	public static function sdkSmsSend($smsParam = [], $sdkOpt = [], $mobile = '', $code = '', $type = '')
 	{
 		// 处理手机号
-		$checkResult = self::getInstance ()->isCheckMobile ( $mobile );
-		if($checkResult['status'] != 200){
+		$checkResult = self::getInstance()->isCheckMobile($mobile);
+		if ($checkResult['status'] != 200) {
 			return $checkResult;
 		}
 		$mobile = $checkResult['mobile'];
@@ -59,23 +59,25 @@ class SmsSdkAlidayu extends SmsSdkCommon implements SmsSdkInterface
 
 		include_once _CTOCODE_EXTEND_ . '/aliyun-dysms-php-sdk-lite/sendSms.php';
 		$code = '';
-		if($type != 'mass'){
-			$code = ctoStrRand ( 'num', 6 );
+		if ($type != 'mass') {
+			$code = ctoStrRandNum(6);
 		}
-		$sendResult = aliyunsendSms ( array(
+		$sendResult = aliyunsendSms(array(
 			'sms_appsign' => $sdkOpt['sms_appsign'],
 			'sms_appkey' => $sdkOpt['sms_appkey'],
 			'sms_appsecret' => $sdkOpt['sms_appsecret'],
 			'sms_tplid' => $sdkOpt['sms_tplid']
-		), $mobile, $code );
-		$sendResult2 = ( array ) $sendResult;
-		if($sendResult2['Code'] == 'OK'){
-			self::getInstance ()->addSmsLog ( $smsParam, $mobile, $code );
+		), $mobile, $code);
+		$sendResult2 = (array) $sendResult;
+		if ($sendResult2['Code'] == 'OK') {
+			$sign =  ctoStrRandCode(5);
+			self::getInstance()->addSmsLog($smsParam, $mobile, $code, $sign);
 			$msg = $type == 'mass' ? '短信群发成功' : '短信验证码已发送';
 			return array(
 				'status' => 200,
 				'error' => 'Not Found',
-				'msg' => $msg
+				'msg' => $msg,
+				'data' => ['sign' => $sign]
 			);
 		}
 	}
