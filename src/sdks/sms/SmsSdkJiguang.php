@@ -2,6 +2,11 @@
 
 namespace ctocode\sdks\sms;
 
+
+# 参考文档 https://github.com/jpush/jsms-api-php-client
+
+use JiGuang\JSMS;
+
 /**
  * 极光短信
  * @author ctocode-zhw
@@ -11,9 +16,9 @@ class SmsSdkJiguang extends SmsSdkCommon implements SmsSdkInterface
 {
 	public static function sdkSmsCheck($smsParam = [], $sdkOpt = [], $mobile = '', $code = '')
 	{
-		$code = trim ( $code );
+		$code = trim($code);
 		// 验证短信配置
-		if(empty ( $code )){
+		if (empty($code)) {
 			return array(
 				'status' => 404,
 				'error' => 'Not Found',
@@ -21,15 +26,16 @@ class SmsSdkJiguang extends SmsSdkCommon implements SmsSdkInterface
 			);
 		}
 		// 实例对象
-		include_once _CTOCODE_EXTEND_ . '/jiguang-sms/jsms/src/JSMS.php';
-		$smsObj = new \JiGuang\JSMS ( $sdkOpt['sms_appkey'], $sdkOpt['sms_appsecret'], [
-			'ssl_verify' => false
-		] );
-		$sendResult = [];
-		$sendResult = $smsObj->checkCode ( $smsParam['msg_id'], $code );
-		$sendResult['result_json_decode'] = json_decode ( $sendResult['body'], true, 10 );
 
-		if($sendResult['http_code'] === 200){
+
+		$smsObj = new \JiGuang\JSMS($sdkOpt['sms_appkey'], $sdkOpt['sms_appsecret'], [
+			'ssl_verify' => false
+		]);
+		$sendResult = [];
+		$sendResult = $smsObj->checkCode($smsParam['msg_id'], $code);
+		$sendResult['result_json_decode'] = json_decode($sendResult['body'], true, 10);
+
+		if ($sendResult['http_code'] === 200) {
 			return array(
 				'status' => 200,
 				'error' => 'Not Found',
@@ -45,23 +51,22 @@ class SmsSdkJiguang extends SmsSdkCommon implements SmsSdkInterface
 	}
 	public static function sdkSmsSend($smsParam = [], $sdkOpt = [], $mobile = '', $code = '', $type = '')
 	{
-		$checkResult = self::getInstance ()->isCheckMobile ( $mobile );
-		if($checkResult['status'] != 200){
+		$checkResult = self::getInstance()->isCheckMobile($mobile);
+		if ($checkResult['status'] != 200) {
 			return $checkResult;
 		}
 		$mobile = $checkResult['mobile'];
 
 		// 实例对象
-		include_once _CTOCODE_EXTEND_ . '/jiguang-sms/jsms/src/JSMS.php';
-		$smsObj = new \JiGuang\JSMS ( $sdkOpt['sms_appkey'], $sdkOpt['sms_appsecret'], [
+		$smsObj = new \JiGuang\JSMS($sdkOpt['sms_appkey'], $sdkOpt['sms_appsecret'], [
 			'ssl_verify' => false
-		] );
+		]);
 		$sendResult = [];
-		$sendResult = $smsObj->sendCode ( $mobile, $sdkOpt['sms_tplid'] );
-		$sendResult['result_json_decode'] = json_decode ( $sendResult['body'], true, 10 );
+		$sendResult = $smsObj->sendCode($mobile, $sdkOpt['sms_tplid']);
+		$sendResult['result_json_decode'] = json_decode($sendResult['body'], true, 10);
 
-		if($sendResult['http_code'] == 200){
-			self::getInstance ()->addSmsLog ( $smsParam, $mobile );
+		if ($sendResult['http_code'] == 200) {
+			self::getInstance()->addSmsLog($smsParam, $mobile);
 			$msg_id = $sendResult['result_json_decode']['msg_id'];
 			return array(
 				'status' => 200,

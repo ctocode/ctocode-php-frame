@@ -19,7 +19,7 @@
 // 获取二维码 [小庄_2016-03-10]
 function ctoHtmlQrcode($url = NULL)
 {
-	return 'http://qr.topscan.com/api.php?el=l&text=' . urlencode ( $url );
+	return 'http://qr.topscan.com/api.php?el=l&text=' . urlencode($url);
 }
 // 自动跳转 [小庄_2016-03-31]
 function ctoHtmlJumpLink($jumpLink = NULL)
@@ -39,12 +39,12 @@ function ctoHtmlJumpLink($jumpLink = NULL)
 function ctoHtmlForeach($tree)
 {
 	$html = '';
-	foreach($tree as $t){
-		if($t['store_upid'] == ''){
+	foreach ($tree as $t) {
+		if ($t['store_upid'] == '') {
 			$t['store_name'] = $t['store_name'];
-		}else{
+		} else {
 			$html .= "<li>" . $t['store_name'];
-			$html .= ctoHtmlForeach ( $t['ip_id'] );
+			$html .= ctoHtmlForeach($t['ip_id']);
 			$html = $html . "</li>";
 		}
 	}
@@ -59,21 +59,21 @@ function ctoHtmlForeach($tree)
  */
 function ctoHtmlEchoMultiCat($cat_lists, $level)
 {
-	if(is_array ( $cat_lists )){
-		$level ++;
-		foreach($cat_lists as $key=>$val){
+	if (is_array($cat_lists)) {
+		$level++;
+		foreach ($cat_lists as $key => $val) {
 			$str = '<option ';
 			$str .= ' value="' . $val['cat_id'] . '" >';
-			for($i = $level - 1;$i > 0;$i --){ // 子集分类加前导字符
+			for ($i = $level - 1; $i > 0; $i--) { // 子集分类加前导字符
 				$str .= '&nbsp;&nbsp;&nbsp;&nbsp;';
 			}
-			if($level - 1 > 0){ // 子集分类加前导字符
+			if ($level - 1 > 0) { // 子集分类加前导字符
 				$str .= '|--';
 			}
 			$str .= $val['cat_name'] . '</option>';
 			echo $str;
-			if(is_array ( $val['tree'] )){
-				ctoHtmlEchoMultiCat ( $val['tree'], $level );
+			if (is_array($val['tree'])) {
+				ctoHtmlEchoMultiCat($val['tree'], $level);
 			}
 		}
 	}
@@ -81,12 +81,12 @@ function ctoHtmlEchoMultiCat($cat_lists, $level)
 function procHtml($tree)
 {
 	$html = '';
-	foreach($tree as $t){
-		if($t['store_upid'] == ''){
+	foreach ($tree as $t) {
+		if ($t['store_upid'] == '') {
 			$t['store_name'] = $t['store_name'];
-		}else{
+		} else {
 			$html .= "<li>" . $t['store_name'];
-			$html .= $this->procHtml ( $t['ip_id'] );
+			$html .= $this->procHtml($t['ip_id']);
 			$html = $html . "</li>";
 		}
 	}
@@ -94,28 +94,28 @@ function procHtml($tree)
 }
 function printTreeHtml($treeData = '', $html_for_type = '', $bindData = '')
 {
-	if($html_for_type == 'select'){
-		return printTreeHtmlSelect ( $treeData, 0, $bindData );
+	if ($html_for_type == 'select') {
+		return printTreeHtmlSelect($treeData, 0, $bindData);
 	}
 }
 function printTreeHtmlSelect($cat_lists = '', $level = '', $bindData = '')
 {
 	$htmls = '';
-	if(is_array ( $cat_lists )){
-		$level ++;
-		foreach($cat_lists as $key=>$val){
+	if (is_array($cat_lists)) {
+		$level++;
+		foreach ($cat_lists as $key => $val) {
 			$str = '<option ';
 			$str .= ' value="' . $val['cat_id'] . '" >';
-			for($i = $level - 1;$i > 0;$i --){ // 子集分类加前导字符
+			for ($i = $level - 1; $i > 0; $i--) { // 子集分类加前导字符
 				$str .= '&nbsp;&nbsp;&nbsp;&nbsp;';
 			}
-			if($level - 1 > 0){ // 子集分类加前导字符
+			if ($level - 1 > 0) { // 子集分类加前导字符
 				$str .= '|--';
 			}
 			$str .= $val['cat_name'] . '</option>';
 			$htmls = $htmls . $str;
-			if(is_array ( $val['tree'] )){
-				$htmls .= printTreeHtmlSelect ( $val['tree'], $level, $bindData );
+			if (is_array($val['tree'])) {
+				$htmls .= printTreeHtmlSelect($val['tree'], $level, $bindData);
 			}
 		}
 	}
@@ -137,7 +137,7 @@ function printTreeHtmlSelect($cat_lists = '', $level = '', $bindData = '')
 function ctoHtmlPagebreak($currentPage = 1, $total = 0, $pageSize = null, $url = null, $style = null)
 {
 	/* style风格样式 */
-	if($style == NULL){
+	if ($style == NULL) {
 		$style = '<style type="text/css">
     div.zhw_htmlpage{text-align: center;padding: 5px 10px;height: 70px; overflow: hidden;}
     div.zhw_htmlpage a{border:1px solid #e4e4e4; font-family:"Tahoma","Arial"; font-size:14px; height:30px; line-height: 30px; 
@@ -162,25 +162,25 @@ function ctoHtmlPagebreak($currentPage = 1, $total = 0, $pageSize = null, $url =
 			}
 			</script>
 EOF;
-	$pagetotal = ceil ( $total / $pageSize ); // 向上取整,算出分页
+	$pagetotal = ceil($total / $pageSize); // 向上取整,算出分页
 	$paging = '<div class="zhw_htmlpage ">';
-	if($pagetotal == 1){
+	if ($pagetotal == 1) {
 		$paging .= '<a id="ctoGoPage1" href=" ' . $url . '1" >1</a>';
-	}else{
+	} else {
 		// 开头部分,是否显示上一页
-		if(($currentPage - 3) > 1){
+		if (($currentPage - 3) > 1) {
 			$paging .= '<a id="ctoGoPage1" href=" ' . $url . '1" >1...</a>
 				<a  href=" ' . $url . ($currentPage - 1) . '" class="next">上一页</a>';
 		}
 		// 中间部分,输出7个分页
-		for($i = $currentPage - 3;$i < $currentPage + 4;$i ++){
-			if($i < 1 || $i > $pagetotal){
+		for ($i = $currentPage - 3; $i < $currentPage + 4; $i++) {
+			if ($i < 1 || $i > $pagetotal) {
 				continue;
 			}
 			$paging .= '<a id="ctoGoPage' . $i . '" href=" ' . $url . $i . '">' . $i . '</a>';
 		}
 		// 结尾部分,是否显示下一页
-		if(($currentPage + 4) <= $pagetotal){
+		if (($currentPage + 4) <= $pagetotal) {
 			$paging .= '<a href=" ' . $url . ($currentPage + 1) . '" class="next">下一页</a>
 						<a id="ctoGoPage' . $pagetotal . '" href="' . $url . $pagetotal . '">...' . $pagetotal . '</a>';
 		}
@@ -198,34 +198,33 @@ EOF;
  */
 function ctoHtmlFilter($content)
 {
-	$content = preg_replace ( "/<p.*?>|<\/p>/is", "", $content );
-	$content = preg_replace ( "/<span.*?>|<\/span>/is", "", $content ); // 过滤span标签
+	$content = preg_replace("/<p.*?>|<\/p>/is", "", $content);
+	$content = preg_replace("/<span.*?>|<\/span>/is", "", $content); // 过滤span标签
 	$pregImgRule = "/<[img|IMG].*?src=[\'|\"](.*?(?:[\.jpg|\.jpeg|\.png|\.gif|\.bmp]))[\'|\"].*?[\/]?>/";
-	$content = preg_replace ( $pregImgRule, '#@#ctocode-img-${1}#@#', $content );
+	$content = preg_replace($pregImgRule, '#@#ctocode-img-${1}#@#', $content);
 	$pregARule = "/<a[^<>]+href *\= *[\"']?([^ '\"]+).*<\/a>/i";
-	$content = preg_replace ( $pregARule, '#@#ctocode-a-${1}#@#', $content );
-	$content = explode ( '#@#', $content );
-	$content = array_filter ( $content );
+	$content = preg_replace($pregARule, '#@#ctocode-a-${1}#@#', $content);
+	$content = explode('#@#', $content);
+	$content = array_filter($content);
 	$data = array();
-	foreach($content as $v){
-		$resultImg = explode ( 'ctocode-img-', $v );
-		$resultA = explode ( 'ctocode-a-', $v );
-		if(! empty ( $resultImg[1] )){
+	foreach ($content as $v) {
+		$resultImg = explode('ctocode-img-', $v);
+		$resultA = explode('ctocode-a-', $v);
+		if (!empty($resultImg[1])) {
 			// img
 			$data[] = array(
 				'img' => $resultImg[1]
 			);
-		}else if(! empty ( $resultA[1] )){
+		} else if (!empty($resultA[1])) {
 			// a
 			$data[] = array(
 				'a' => $resultA[1]
 			);
-		}else{
+		} else {
 			$appEmotion = "";
-			$appEmotion = preg_replace_callback ( '/@E(.{6}==)/', function ($r)
-			{
-				return base64_decode ( $r[1] );
-			}, strip_tags ( $v ) );
+			$appEmotion = preg_replace_callback('/@E(.{6}==)/', function ($r) {
+				return base64_decode($r[1]);
+			}, strip_tags($v));
 			$data[] = array(
 				'text' => $appEmotion
 			);
@@ -242,28 +241,28 @@ function ctoHtmlFilter($content)
  */
 function ctoHtmlUiMerge($uiArr = array(), $baseurl = '', $ver = 0)
 {
-	$baseurl = ! empty ( $baseurl ) ? $baseurl : ctoUrlBase ();
+	$baseurl = !empty($baseurl) ? $baseurl : ctoUrlBase();
 	$news_assets = array();
-	if(! empty ( $uiArr )){
+	if (!empty($uiArr)) {
 		$t = '';
-		foreach($uiArr as $file){
+		foreach ($uiArr as $file) {
 			$file_path = $file;
 			$news_assets[] = $file_path;
-			$t .= @filemtime ( $file_path );
+			$t .= @filemtime($file_path);
 		}
-		$news_assets_str = join ( ',', $news_assets );
-		unset ( $news_assets );
-		return $baseurl . 'minify.php?f=' . $news_assets_str . (empty ( $ver ) ? '&v=' . substr ( md5 ( $t ), 0, 8 ) : '&v=' . $ver);
-	}else
+		$news_assets_str = join(',', $news_assets);
+		unset($news_assets);
+		return $baseurl . 'minify.php?f=' . $news_assets_str . (empty($ver) ? '&v=' . substr(md5($t), 0, 8) : '&v=' . $ver);
+	} else
 		return '';
 }
 // 生成静态文件
 function ctoHtmlCreate($file)
 {
-	$data = ob_get_contents ();
-	ob_clean ();
+	$data = ob_get_contents();
+	ob_clean();
 	// class dir.func
-	$strlen = creatfile ( $file, $data );
+	$strlen = creatfile($file, $data);
 	return $strlen;
 }
 /*
@@ -272,34 +271,34 @@ function ctoHtmlCreate($file)
  */
 function ctoHtmlTemplateLoad($fname)
 {
-	ctoLoadClass ( 'template.func' );
-	$fname = preg_replace ( '#[/\\\]+#', '/', $fname );
-	return temp_refresh ( $fname );
+	ctoLoadClass('template.func');
+	$fname = preg_replace('#[/\\\]+#', '/', $fname);
+	return temp_refresh($fname);
 }
 function ctoHtmlTemplateRefresh($tempfile)
 {
 	$tpl = '';
 	$default = 1;
 	$fname = $default ? BAIYU_ADMIN . '/tpls/' . $tpl . '.html' : BAIYU_ADMIN . '/tpls/' . $tpl;
-	$tempfile = preg_replace ( '#[/\\\]+#', '/', $fname );
-	$tempfile = str_replace ( "\\", "/", $tempfile );
-	if(! is_file ( $tempfile )){
+	$tempfile = preg_replace('#[/\\\]+#', '/', $fname);
+	$tempfile = str_replace("\\", "/", $tempfile);
+	if (!is_file($tempfile)) {
 		echo "Template Not Found.";
 	}
-	$md5 = md5 ( $tempfile );
-	$cachedir = BAIYU_DATA . '/tpls/' . substr ( $md5, 0, 2 ) . '/' . substr ( $md5, 2, 2 );
-	$cachename = substr ( $md5, 4, 28 ) . '.php';
+	$md5 = md5($tempfile);
+	$cachedir = BAIYU_DATA . '/tpls/' . substr($md5, 0, 2) . '/' . substr($md5, 2, 2);
+	$cachename = substr($md5, 4, 28) . '.php';
 	$cachetemp = $cachedir . '/' . $cachename;
-	if(! file_exists ( $cachetemp ) || ($_glb['cachetpl'] && @filemtime ( $tempfile ) > @filemtime ( $cachetemp ))){
-		if(! is_dir ( $cachedir )){
+	if (!file_exists($cachetemp) || ($_glb['cachetpl'] && @filemtime($tempfile) > @filemtime($cachetemp))) {
+		if (!is_dir($cachedir)) {
 			// class dir.func
-			creatdir ( $cachedir );
+			creatdir($cachedir);
 		}
-		$dir = dirname ( $tempfile );
-		$str = @file_get_contents ( $tempfile );
-		$str = temp_parse ( $str, $dir, 1 );
-		$strlen = @file_put_contents ( $cachetemp, $str );
-		@chmod ( $cachetemp, 0777 );
+		$dir = dirname($tempfile);
+		$str = @file_get_contents($tempfile);
+		$str = temp_parse($str, $dir, 1);
+		$strlen = @file_put_contents($cachetemp, $str);
+		@chmod($cachetemp, 0777);
 	}
 	return $cachetemp;
 }
