@@ -1,45 +1,4 @@
 <?php
-include __DIR__ . '/Push/Request/V20160801/PushRequest.php';
-include __DIR__ . '/Push/Request/V20160801/QueryDeviceInfoRequest.php';
-
-
-use AlibabaCloud\Push\Push;
-
-// $pushResult = ctoAliyunAppPush ( array(
-// 'push_appkey' => 'LTAIftZj8vQXnalx',
-// 'push_appsecret' => 'wOHDw8WqOTKKz7M99j0CxvSnQLhkTE',
-// 'push_regionid' => "cn-hangzhou",
-// 'push_key' => '24904634'
-// ), array(
-// 'set_target' => 'ALIAS',
-// 'set_target_value' => 'hrhg#91#hrhg',
-
-// // 'set_target' => 'DEVICE',
-// // 'set_target_value' => '269c16aa207946f6b79894972b1e2c05',
-
-// 'set_device_type' => 'iOS',
-// 'set_push_type' => 'NOTICE',
-// 'set_title' => 'cto标题测试'.date('Y-m-d H:i',time()),,
-// 'set_body' => 'cto内容测试.date('Y-m-d H:i',time()),'
-// ), 'ios' );
-
-// $pushResult2 = ctoAliyunAppPush ( array(
-// 'push_appkey' => 'LTAIftZj8vQXnalx',
-// 'push_appsecret' => 'wOHDw8WqOTKKz7M99j0CxvSnQLhkTE',
-// 'push_regionid' => "cn-hangzhou",
-// 'push_key' => '24903645'
-// ), array(
-// 'set_target' => 'ALL',
-// 'set_target_value' => 'ALL',
-// 'set_device_type' => 'ANDROID',
-// 'set_push_type' => 'NOTICE',
-// 'set_title' => 'cto标题测试' . date ( 'Y-m-d H:i', time () ),
-// 'set_body' => 'cto内容测试' . date ( 'Y-m-d H:i', time () )
-// ), 'android' );
-
-// print_r ( "\r\n" );
-// print_r ( $pushResult2 );
-
 /*
  *
  */

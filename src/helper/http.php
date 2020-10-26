@@ -52,11 +52,8 @@ function ctoHttpCurl($url = '', $data = null, $header = null)
 	if (empty($url)) {
 		return '';
 	}
-	// 初始化curl模块,启动一个CURL会话
 	$curl = curl_init();
-	// 请求的url地址
 	curl_setopt($curl, CURLOPT_URL, $url);
-	// 是否开启 显示返回的header头信息区域内容
 	curl_setopt($curl, CURLOPT_HEADER, 0);
 	// 设置传递的头部信息
 	$header_arr = array(
@@ -97,8 +94,8 @@ function ctoHttpCurl($url = '', $data = null, $header = null)
 	// curl_setopt ( $curl, CURLOPT_REFERER, "" );
 
 	// 读取cookie
+	// $cookie_file = tempnam ( './data', 'cookie' );
 	// curl_setopt ( $curl, CURLOPT_COOKIE, $cookie_file );
-	// 设置Cookie信息保存在指定的文件中
 	// curl_setopt ( $curl, CURLOPT_COOKIEJAR, $cookie_file );
 	// curl_setopt ( $curl, CURLOPT_COOKIEFILE, $cookie_file );
 	// @ unlink ( $cookie );
@@ -109,26 +106,12 @@ function ctoHttpCurl($url = '', $data = null, $header = null)
 	// 执行cURL
 	$output = curl_exec($curl);
 	$is_errno = curl_errno($curl);
-	if ($is_errno) { // 捕抓异常
+	if ($is_errno) {
 		return 'Errno' . $is_errno;
 	}
-	// 关闭CURL资源会话，并且释放系统资源
 	curl_close($curl);
-	// 返回数据
 	return $output;
-
-	// 使用
-	// $cookie_file = tempnam ( './data', 'cookie' );
-
-	// $curl_url = 'http://api.cto.com/';
-	// $curl_post_data = array(
-	// 'type' => $xxx_id,   
-	// 'token' => 'xsasadqwas123'
-	// );
-	// $result_json = ctoHttpCurl ( $curl_url, $curl_post_data );
-	// $result_arr = json_decode ( $result_json, true );
 }
-
 /**
  * @action http转换为https  
  * @author ctocode-zwj
@@ -278,42 +261,6 @@ function ctoUrlRedirect($uri = '', $type = 'location', $http_response_code = 302
 	}
 	exit();
 }
-function ctoUrlBase()
-{
-	// // 获取域名或主机地址 localhost\192.168.0.1、127.0.0.1
-	// echo $_SERVER['HTTP_HOST'] . "<br>"; //
-
-	// // 获取网页地址 /blog/testurl.php
-	// echo $_SERVER['PHP_SELF'] . "<br>"; //
-
-	// // 获取网址参数 id=5
-	// echo $_SERVER["QUERY_STRING"] . "<br>"; //
-
-	// // 获取用户代理
-	// echo $_SERVER['HTTP_REFERER'] . "<br>";
-
-	// // 获取完整的url
-	// echo 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . "<br>";
-	// echo 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING'] . "<br>";
-	// // http://localhost/blog/testurl.php?id=5
-	// // 包含端口号的完整url
-	// echo 'http://' . $_SERVER['SERVER_NAME'] . ':' . $_SERVER["SERVER_PORT"] . $_SERVER["REQUEST_URI"] . "<br>";
-	// // http://localhost:80/blog/testurl.php?id=5
-	// // 只取路径
-	// $url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER["REQUEST_URI"];
-	// echo dirname ( $url );
-
-	// $server_protocol = isset ( $_SERVER['SERVER_PROTOCOL'] ) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1';
-	// echo "<br>" . $server_protocol . "<br>";
-	if (isset($_SERVER['HTTP_HOST']) && preg_match('/^((\[[0-9a-f:]+\])|(\d{1,3}(\.\d{1,3}){3})|[a-z0-9\-\.]+)(:\d+)?$/i', $_SERVER['HTTP_HOST'])) {
-		$base_url = (ctoUrlIsHttps() ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . substr($_SERVER['SCRIPT_NAME'], 0, strpos($_SERVER['SCRIPT_NAME'], basename($_SERVER['SCRIPT_FILENAME'])));
-		$base_url2 = substr($_SERVER['SCRIPT_NAME'], 0, strpos($_SERVER['SCRIPT_NAME'], basename($_SERVER['SCRIPT_FILENAME'])));
-	} else {
-		$base_url = 'http://localhost/';
-	}
-	return $base_url;
-}
-
 /**
  * @action 判断是否是https
  * @author ctocode-zhw

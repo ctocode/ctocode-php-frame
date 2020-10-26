@@ -76,13 +76,11 @@ class Controller extends \think\Controller
 		/*
 		 * 当前模块 URL
 		 */
-		$this->assign('_addModName', $this->addon);
 		/*
 		 * 当前控制器 URL
 		 */
 		$controller_name = $this->controller;
 		// $controller_url_name = strtolower ( preg_replace ( '/(?<=[a-z])([A-Z])/', '_$1', $controller_name ) );
-		$this->assign('_addConName', $controller_name);
 		/*
 		 * 处理 方法，减轻tp5 强制错误级别
 		 */
