@@ -16,31 +16,31 @@
  */
 
 // 1. 加载基础常量配置文件件
-define ( '_CTOCODE_ROOT_', '20191123' );
+define('_CTOCODE_ROOT_', '20191123');
 /*
  * ============================================================================
  * 授权处理
  * ============================================================================
  */
 $ctocode_frame = array(
-	/* 软件名称 */
-	'_CTOCODE_FRAME_NAME_' => 'ctocode-php-frame',
-	'_CTOCODE_FRAME_VERSION_' => '1.0.0',
-	/* 版本号等信息 */
-	'_CTOCODE_FRAME_BUILD_' => '2017.07.28.1833',
-	'_CTOCODE_FRAME_AUTHOR_' => 'ctocode member 343196936@qq.com',
-	'_CTOCODE_FRAME_LINK_' => 'https://ctocode.com',
-	/* 版权 */
-	'_CTOCODE_COPYRIGHT_' => 'https://ctocode.com',
-	/* 许可证 */
-	'_CTOCODE_LICENSE_' => '20180906-v2',
-	/* LICENSE ID */
-	'_CTOCODE_LICENSE_ID' => 'V20170129',
-	/* LICENSE KEY */
-	'_CTOCODE_LICENSE_KEY' => 'ctocodeV20170129'
+    /* 软件名称 */
+    '_CTOCODE_FRAME_NAME_' => 'ctocode-php-frame',
+    '_CTOCODE_FRAME_VERSION_' => '1.0.0',
+    /* 版本号等信息 */
+    '_CTOCODE_FRAME_BUILD_' => '2017.07.28.1833',
+    '_CTOCODE_FRAME_AUTHOR_' => 'ctocode member 343196936@qq.com',
+    '_CTOCODE_FRAME_LINK_' => 'https://ctocode.com',
+    /* 版权 */
+    '_CTOCODE_COPYRIGHT_' => 'https://ctocode.com',
+    /* 许可证 */
+    '_CTOCODE_LICENSE_' => '20180906-v2',
+    /* LICENSE ID */
+    '_CTOCODE_LICENSE_ID' => 'V20170129',
+    /* LICENSE KEY */
+    '_CTOCODE_LICENSE_KEY' => 'ctocodeV20170129'
 );
-if(empty ( $ctocode_frame['_CTOCODE_LICENSE_'] ) || empty ( $ctocode_frame['_CTOCODE_COPYRIGHT_'] )){
-	exit ( '【ctocode - error】许可证或者版权错误～' );
+if (empty($ctocode_frame['_CTOCODE_LICENSE_']) || empty($ctocode_frame['_CTOCODE_COPYRIGHT_'])) {
+    exit('【ctocode - error】许可证或者版权错误～');
 }
 /*
  * ============================================================================
@@ -48,23 +48,23 @@ if(empty ( $ctocode_frame['_CTOCODE_LICENSE_'] ) || empty ( $ctocode_frame['_CTO
  * ============================================================================
  */
 // ctocode 框架路径,定义一个常量,正则替换-获取当前文件的绝对目录,当前文件所在路径
-define ( '_CTOCODE_PHPFRAME_', preg_replace ( '/(\/|\\\\){1,}/', '/', __DIR__ ) . '/' );
+define('_CTOCODE_PHPFRAME_', preg_replace('/(\/|\\\\){1,}/', '/', __DIR__) . '/');
 // ctocode 字体
-define ( '_CTOCODE_FONTS_', dirname ( _CTOCODE_PHPFRAME_ ) . '/assets/fonts/' );
+define('_CTOCODE_FONTS_', dirname(_CTOCODE_PHPFRAME_) . '/assets/fonts/');
 // 项目路径
-define ( '_CTOCODE_PROJECT_', dirname ( _CTOCODE_PHPFRAME_, 4 ) . '/' );
+define('_CTOCODE_PROJECT_', dirname(_CTOCODE_PHPFRAME_, 4) . '/');
 // 配置文件路径
-is_dir ( _CTOCODE_PROJECT_ . 'config/' ) ? define ( '_CTOCODE_CONFIG_', _CTOCODE_PROJECT_ . 'config/' ) : exit ( '【ctocode - error】配置文件路径不存在～' );
+is_dir(_CTOCODE_PROJECT_ . 'config/') ? define('_CTOCODE_CONFIG_', _CTOCODE_PROJECT_ . 'config/') : exit('【ctocode - error】配置文件路径不存在～');
 // ctocode 组件开发
-define ( '_CTOCODE_ADDONS_', _CTOCODE_PROJECT_ . 'addons/' );
+define('_CTOCODE_ADDONS_', _CTOCODE_PROJECT_ . 'addons/');
 // ctocode 自己扩展类库
-define ( '_CTOCODE_EXTEND_', _CTOCODE_PROJECT_ . 'extend/' );
+define('_CTOCODE_EXTEND_', _CTOCODE_PROJECT_ . 'extend/');
 // 文件上传存放 文件资源路径
-define ( '_CTOCODE_FILE_', _CTOCODE_PROJECT_ . 'public/storage/' );
+define('_CTOCODE_FILE_', _CTOCODE_PROJECT_ . 'public/storage/');
 // 程序运行产生的文件 ,ctocode 数据
-define ( '_CTOCODE_RUNTIME_', _CTOCODE_PROJECT_ . 'runtime/' );
+define('_CTOCODE_RUNTIME_', _CTOCODE_PROJECT_ . 'runtime/');
 // composer扩展类库
-define ( '_CTOCODE_VENDOR_', _CTOCODE_PROJECT_ . 'vendor/' );
+define('_CTOCODE_VENDOR_', _CTOCODE_PROJECT_ . 'vendor/');
 
 // 2. 导入相关文件
 /*
